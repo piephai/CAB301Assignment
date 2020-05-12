@@ -6,7 +6,7 @@ namespace CAB301Assignment
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Hello World! Yes");
         }
     }
 }
