@@ -41,7 +41,7 @@ namespace CAB301Assignment
 
             {
             case 1:
-                Console.WriteLine("Staff Login");
+                    StaffMenu();
                 break;
 
             case 2:
@@ -60,7 +60,7 @@ namespace CAB301Assignment
 
         }
 
-        //Customer Menu
+        //Member Menu
         static void MemberMenu()
         {
             Action printMenu = () =>
@@ -76,9 +76,91 @@ namespace CAB301Assignment
             Console.Clear();
             Console.WriteLine("===========Member Menu==========");
             printMenu();
+            Console.WriteLine("================================");
             Console.WriteLine(" \n Please make a selection (1-5," +
                " or 0 to return to the main menu) ");
 
+            uint choice = GetUserChoice(printMenu, 6);
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine("All movies");
+                    break;
+
+                case 2:
+                    Console.WriteLine("Borrow a movie DVD");
+                    break;
+
+                case 3:
+                    Console.WriteLine("Return a movie DVD");
+                    break;
+
+                case 4:
+                    Console.WriteLine("All current borrowed movie DVDs");
+                    break;
+
+                case 5:
+                    Console.WriteLine("Top 10 most popular movies");
+                    break;
+
+                case 0:
+                    MainMenu();
+                    break;
+                default:
+                    throw new NotImplementedException();
+
+
+            }
+
+        }
+
+        //Staff Menu
+        static void StaffMenu()
+        {
+            //Creating the staff menu option
+            Action printMenu = () =>
+            {
+                Console.WriteLine("1. Add a new movie DVD");
+                Console.WriteLine("2. Remove a movie DVD");
+                Console.WriteLine("3. Register a new Member");
+                Console.WriteLine("4. Find a registered member's phone number");
+                Console.WriteLine("0. Return to the main menu");
+            };
+
+            Console.Clear();
+            Console.WriteLine("===========Staff Menu==========");
+            printMenu(); 
+            Console.WriteLine("================================");
+            Console.WriteLine(" \n Please make a selection (1-4," +
+               " or 0 to return to the main menu) ");
+
+            uint choice = GetUserChoice(printMenu, 6);
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine("Add a new movie DVD");
+                    break;
+
+                case 2:
+                    Console.WriteLine("Remove a movie DVD");
+                    break;
+
+                case 3:
+                    Console.WriteLine("Register a new member");
+                    break;
+
+                case 4:
+                    Console.WriteLine("Registered Member's Phone Number");
+                    break;
+
+                case 0:
+                    MainMenu();
+                    break;
+                default:
+                    throw new NotImplementedException();
+
+
+            }
 
         }
 
@@ -96,7 +178,8 @@ namespace CAB301Assignment
                     while (choice < 0 || choice > choiceMax)
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Invalid key entered. Please try again");
+                        Console.WriteLine("Invalid key entered. " +
+                            "Please try again");
                         printMenu();
                         getInput();
                     }
