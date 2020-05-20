@@ -10,50 +10,50 @@ namespace CAB301Assignment
         }
 
 
-       
+
 
         static void MainMenu()
 
         {
 
-        //Menu calling the user to action
-        Action printMenu = () =>
-        {
-            Console.WriteLine("1. Staff Login");
-            Console.WriteLine("2. Member Login");
-            Console.WriteLine("0. Exit");
-           
-        };
+            //Menu calling the user to action
+            Action printMenu = () =>
+            {
+                Console.WriteLine("1. Staff Login");
+                Console.WriteLine("2. Member Login");
+                Console.WriteLine("0. Exit");
 
-        Console.Clear();
-        Console.WriteLine("Welcome to the Community Library");
-        Console.WriteLine("===========Main Menu==========");
-   
-        printMenu();
-        Console.WriteLine("==============================");
-        Console.WriteLine(" \n Please make a selection (1-2," +
-                " or 0 to exit) ");
+            };
 
-        uint choice = GetUserChoice(printMenu, 3);
+            Console.Clear();
+            Console.WriteLine("Welcome to the Community Library");
+            Console.WriteLine("===========Main Menu==========");
 
-        //Switch statement based on user choice
-        switch (choice)
+            printMenu();
+            Console.WriteLine("==============================");
+            Console.WriteLine(" \n Please make a selection (1-2," +
+                    " or 0 to exit) ");
+
+            uint choice = GetUserChoice(printMenu, 3);
+
+            //Switch statement based on user choice
+            switch (choice)
 
             {
-            case 1:
-                    StaffMenu();
-                break;
+                case 1:
+                    LoginMenu("staff");
+                    break;
 
-            case 2:
-                    MemberMenu();
-                break;
+                case 2:
+                    LoginMenu("member");
+                    break;
 
-            case 0:
-                Console.WriteLine("Thank you for visiting the community " +
-                    "library");
-                break;
-            default:
-                throw new NotImplementedException();
+                case 0:
+                    Console.WriteLine("Thank you for visiting the community " +
+                        "library");
+                    break;
+                default:
+                    throw new NotImplementedException();
 
 
             }
@@ -129,12 +129,12 @@ namespace CAB301Assignment
 
             Console.Clear();
             Console.WriteLine("===========Staff Menu==========");
-            printMenu(); 
+            printMenu();
             Console.WriteLine("================================");
             Console.WriteLine(" \n Please make a selection (1-4," +
                " or 0 to return to the main menu) ");
 
-            uint choice = GetUserChoice(printMenu, 6);
+            uint choice = GetUserChoice(printMenu, 5);
             switch (choice)
             {
                 case 1:
@@ -165,26 +165,72 @@ namespace CAB301Assignment
         }
 
         // Getting user choice and making sure that their choice is valid 
-        static uint GetUserChoice (Action printMenu, int choiceMax)
+        static uint GetUserChoice(Action printMenu, int choiceMax)
+        {
+            uint choice = 0;
+            Action getInput = () =>
             {
-                uint choice = 0;
-                Action getInput = () =>
-                {
-                    uint.TryParse(Console.ReadLine(), out choice);
-                };
+                uint.TryParse(Console.ReadLine(), out choice);
+            };
 
+            getInput();
+
+            while (choice < 0 || choice > choiceMax - 1)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Invalid key entered. " +
+                    "Please try again");
+                printMenu();
                 getInput();
-         
-                    while (choice < 0 || choice > choiceMax)
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Invalid key entered. " +
-                            "Please try again");
-                        printMenu();
-                        getInput();
-                    }
-                    return choice;
-            
+            }
+            return choice;
+
+        }
+
+        //User Login Menu
+        static void LoginMenu(string menuChoice)
+        {
+            bool close = true;
+            Console.Clear();
+
+            //Continous loop until user enter correct username and password
+            while (close)
+            {
+                Console.WriteLine("\nPlease enter your " + menuChoice +
+                    " username: ");
+                string username = Console.ReadLine();
+                Console.WriteLine("Please enter your " + menuChoice +
+                    " password");
+                string password = Console.ReadLine();
+
+                //Staff login
+                if (menuChoice == "staff" && username == "staff" &&
+                    password == "today123")
+                {
+
+                    close = false;
+                    StaffMenu();
+
+                }
+                //TODO: Fix up the login to be universal and do testings
+                //Member login
+                else if (menuChoice == "member" && username == "rossbob" &&
+                    password == "1234" )
+                {
+                    
+                close = false;
+                MemberMenu();
+                }
+
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Incorrect Username or " +
+                        "Password"
+                        + "\nPlease re-enter your " +
+                        "login details \n");
+                }
             }
         }
-}
+    }
+} 
