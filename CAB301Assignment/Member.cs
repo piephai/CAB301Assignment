@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace CAB301Assignment
 {
 
     public class Member
     {
+       
 
-        public string firstName;
-        public string lastName;
-        public string address;
-        public int phoneNumber;
-        public string borrowedDVDs;
-        public int password;
+        public static string firstName, lastName, address, borrowedDVDs;
+        public static int phoneNumber, password;
+
 
         public string FirstName
         {
@@ -43,21 +43,25 @@ namespace CAB301Assignment
             get { return password; }
             set { password = value; }
         }
-  
 
-        public void PrintMemberDetails()
+        
+
+        public static void PrintMemberDetails()
         {
+            Console.WriteLine("The following user was created: ");
             Console.WriteLine("First name: " + firstName);
             Console.WriteLine("Last name: " + lastName);
             Console.WriteLine("Address: " + address);
-            Console.WriteLine("Phone Number: " + phoneNumber);
-            Console.WriteLine("Borrowed DVDS: " + borrowedDVDs);
-            Console.WriteLine("Password: " + password);
+            Console.WriteLine("Phone Number: 61+ " + phoneNumber);
+            Console.WriteLine("Password (4 Digits Number): " + password);
         }
-
-        
 
 
     }
 }
+
+
+
+
+        
 
