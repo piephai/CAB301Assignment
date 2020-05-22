@@ -6,52 +6,129 @@ namespace CAB301Assignment
     public class MemberCollection
 
     {
-        static Member[] members = new Member[400];
+        //private int index = 0;
+        static int NUM = 100;
+        static Member[] members = new Member[NUM];
+        static private int index = 0;
+        private string firstName, lastName, address, fullName, userName;
+        private int phoneNumber, password;
 
-        public static void AddMember()
+
+        //Default empty Constructor
+        public MemberCollection() { }
+
+
+        //Add new member to the array
+        public void AddMember()
         {
-            int index = Array.IndexOf(members, null);
-            if (index != -1)
+            Console.WriteLine("--------Add new member-------");
+            Console.Write("First name: ");
+            firstName = Console.ReadLine().ToLower();
+            Console.Write("Last name: ");
+            lastName = Console.ReadLine().ToLower();
+            fullName = firstName + lastName;
+            userName = lastName + firstName;
+            Console.Write("Address: ");
+            address = Console.ReadLine();
+            phoneNumber = PhoneNumberChecker();
+            password = PasswordChecker();
+
+            members[index] = new Member(firstName, lastName, address,
+                fullName, userName, phoneNumber, password);
+            Console.WriteLine(members[index]);
+            index += 1;
+        }
+
+        public void FindMemberContactPhoneNumber()
+        {
+            //Find member contact phone number using name
+            Console.Clear();
+            Console.WriteLine("--------Find registered member phone number" +
+                "---------");
+            Console.Write("Enter registered member first and last name" +
+                " with no space: ");
+
+
+            //Find the name of the user using their phone number or find their
+            //find their phone number using their name
+            string input = Console.ReadLine();
+            int uinput = 0;
+            int.TryParse(Console.ReadLine(), out uinput);
+
+         
+            //TODO: See if it's easier to find stuff using other methods
+            foreach (Member search in members)
             {
-                Console.Clear();
-                Console.WriteLine("--------Add new member-------");
-               
-                members[index] = new Member();
-                Console.WriteLine("First name: ");
-                members[index].FirstName = Console.ReadLine();
-                Console.WriteLine("Last name: ");
-                members[index].LastName = Console.ReadLine();
-                Console.WriteLine("Address: ");
-                members[index].Address = Console.ReadLine();
-                
-                members[index].PhoneNumber = PhoneNumberChecker();
-                members[index].Password = PasswordChecker();
-                Console.WriteLine("");
-                Member.PrintMemberDetails();
-                Console.WriteLine("\nPress any key to go back to staff menu");
-                Console.ReadKey();
+                if (search.FullName == input)
+                {
+                    Console.WriteLine("User phone number is: 61+ {0}",
+                    search.PhoneNumber);
+                    Console.ReadKey();
+                    
+                }
+                else if (search.PhoneNumber == uinput)
+                {
+                    Console.WriteLine("User full name is: {0} {1}",
+                        search.FirstName, search.LastName);
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("Unable to find username or phone" +
+                        "number");
+                    Console.ReadKey();                   
+                }
+            }
 
 
 
+
+
+            //int currentPhoneNumber = 0;
+            //while (valid == false)
+            //{
+            //    if (Member.fullName.Equals(Console.ReadLine()))
+            //    {
+            //        currentPhoneNumber = Member.phoneNumber;
+            //        Console.WriteLine("User phone number is: 61+ " +
+            //        currentPhoneNumber);
+            //        valid = true;
+            //        Console.WriteLine("\n Press any key to go back to staff" +
+            //            " menu");
+            //        Console.ReadKey();
+
+
+            //    }
+            //    else
+            //    {
+            //        valid = false;
+            //        Console.WriteLine("User does not exist");
+            //    }
+            //}
+
+            //}
+        }
+        public void ShowInfo()
+        {
+            for (int i = 0; i < NUM; i++)
+            {
+                Console.WriteLine(members[i]);
             }
         }
 
-        public static void FindMemberContactPhoneNumber(string n)
-        {
-            //TODO:
-        }
 
+        //Test to see if the phone number is valid
         private static int PhoneNumberChecker()
         {
             int numericalOutput = 0;
             bool valid = false;
-            while ( valid == false)
+            while (valid == false)
             {
                 Console.WriteLine("PhoneNumber (10 digits including the " +
                     "starting 0): ");
                 string input = Console.ReadLine();
                 if (int.TryParse(input, out numericalOutput) &&
-                    input.Length == 10)
+                    input.Length == 10)//Phone number can only contain 10 digits
                 {
                     valid = true;
                     int.TryParse(input, out numericalOutput);
@@ -61,11 +138,13 @@ namespace CAB301Assignment
                 {
                     Console.WriteLine("\nInvalid phone number");
                 }
-            } 
-            
+            }
+
             return numericalOutput;
         }
 
+
+        //Test to see if password is valid
         public static int PasswordChecker()
         {
             bool valid = false;
@@ -76,7 +155,7 @@ namespace CAB301Assignment
                 string input = Console.ReadLine();
                 if (int.TryParse(input, out currentPassword) &&
                     input.Length == 4
-                    )
+                    ) //Password can only contain 4 digits
                 {
                     valid = true;
                     int.TryParse(input, out currentPassword);
@@ -92,7 +171,10 @@ namespace CAB301Assignment
 
 
         }
-
-
     }
 }
+
+
+
+
+

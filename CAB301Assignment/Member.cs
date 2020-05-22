@@ -6,57 +6,54 @@ namespace CAB301Assignment
 
     public class Member
     {
-       
-
-        public static string firstName, lastName, address, borrowedDVDs;
-        public static int phoneNumber, password;
-
-
-        public string FirstName
+        //Default empty constructor
+        public Member()
         {
-            get { return firstName.ToLower(); }
-            set { firstName = value; }
-        }
-        public string LastName
-        {
-            get { return lastName.ToLower(); }
-            set { lastName = value; }
-        }
-        public string Address
-        {
-            get { return address; }
-            set { address = value; }
-        }
-        public int PhoneNumber
-        {
-            get { return phoneNumber; }
-            set { phoneNumber = value; }
-        }
-        public string BorrowedDVDs
-        {
-            get { return borrowedDVDs; }
-            set { borrowedDVDs = value; }
         }
 
-        public int Password
+        //Initialises a new member
+        public Member(string firstName, string lastName, string address,
+            string fullName, string userName, int phoneNumber, int password)
         {
-            get { return password; }
-            set { password = value; }
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Address = address;
+            this.FullName = fullName;
+            this.UserName = userName;
+            this.PhoneNumber = phoneNumber;
+            this.Password = password;
         }
 
-        
+        //Declarations
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Address { get; set; }
+        public string FullName { get; set; }
+        public string UserName { get; set; }
+        public int PhoneNumber { get; set; }
+        public int Password { get; set; }
 
-        public static void PrintMemberDetails()
+
+        //Print member details when the user is first created
+        //public void PrintMemberDetails()
+        //{
+        //    Console.WriteLine("The following user was created: ");
+        //    Console.WriteLine("First name: " + FirstName);
+        //    Console.WriteLine("Last name: " + LastName);
+        //    Console.WriteLine("Address: " + Address);
+        //    Console.WriteLine("Phone Number: 61+ " + PhoneNumber);
+        //    Console.WriteLine("Password (4 Digits Number): " + Password);
+        //    Console.WriteLine("Username: " + UserName);
+        //}
+
+        public override string ToString()
         {
-            Console.WriteLine("The following user was created: ");
-            Console.WriteLine("First name: " + firstName);
-            Console.WriteLine("Last name: " + lastName);
-            Console.WriteLine("Address: " + address);
-            Console.WriteLine("Phone Number: 61+ " + phoneNumber);
-            Console.WriteLine("Password (4 Digits Number): " + password);
+            return String.Format("User: \n" +
+                "First name: {0}\nLast name: {1}\nAddress: {2}\n" +
+                "Phone Number: 61+ {3}\nPassword (4 Digits Number): {4}" +
+                "\nUsername: {5}", FirstName, LastName, Address, PhoneNumber,
+                Password, UserName);
         }
-
-
     }
 }
 
