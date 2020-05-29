@@ -6,7 +6,14 @@ namespace CAB301Assignment
     {
         static void Main(string[] args)
         {
+
+
+
+            MovieCollection.PreMadeMovies();
+
             Menus.MainMenu();
+          
+
         }
     }
 }

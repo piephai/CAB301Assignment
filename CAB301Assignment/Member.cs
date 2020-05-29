@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+
 
 namespace CAB301Assignment
 {
@@ -33,18 +33,6 @@ namespace CAB301Assignment
         public int PhoneNumber { get; set; }
         public int Password { get; set; }
 
-
-        //Print member details when the user is first created
-        //public void PrintMemberDetails()
-        //{
-        //    Console.WriteLine("The following user was created: ");
-        //    Console.WriteLine("First name: " + FirstName);
-        //    Console.WriteLine("Last name: " + LastName);
-        //    Console.WriteLine("Address: " + Address);
-        //    Console.WriteLine("Phone Number: 61+ " + PhoneNumber);
-        //    Console.WriteLine("Password (4 Digits Number): " + Password);
-        //    Console.WriteLine("Username: " + UserName);
-        //}
 
         public override string ToString()
         {

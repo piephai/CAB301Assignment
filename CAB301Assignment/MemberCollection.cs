@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+
 
 namespace CAB301Assignment
 {
@@ -8,7 +8,7 @@ namespace CAB301Assignment
     {
         //private int index = 0;
         static int NUM = 100;
-        static Member[] members = new Member[NUM];
+        public static Member[] members = new Member[NUM];
         static private int index = 0;
         private string firstName, lastName, address, fullName, userName;
         private int phoneNumber, password;
@@ -35,10 +35,39 @@ namespace CAB301Assignment
 
             members[index] = new Member(firstName, lastName, address,
                 fullName, userName, phoneNumber, password);
-            Console.WriteLine(members[index]);
+            Console.WriteLine("Sucessfully created: {0} {1}",
+                members[index].FirstName,
+                members[index].LastName);
             index += 1;
         }
 
+        //private (string, string) CheckMemberExist()
+        //{
+        //    bool isExist = true;
+        //    while (isExist)
+        //    {
+        //        Console.Write("First name: ");
+        //        firstName = Console.ReadLine().ToLower();
+        //        Console.Write("Last name: ");
+        //        lastName = Console.ReadLine().ToLower();
+        //        foreach (Member member in members)
+        //        {
+        //            if (member.FirstName == firstName && member.LastName
+        //                == lastName)
+        //            {
+        //                isExist = true;
+        //                Console.WriteLine("{0} {1} is already registered",
+        //                    firstName, lastName);
+        //            }
+        //            else
+        //            {
+
+        //                isExist = false;
+        //            }
+        //        }
+        //    } return (firstName, lastName);
+        //}
+        //TODO: Find member contact from name
         public void FindMemberContactPhoneNumber()
         {
             //Find member contact phone number using name
@@ -55,7 +84,7 @@ namespace CAB301Assignment
             int uinput = 0;
             int.TryParse(Console.ReadLine(), out uinput);
 
-         
+
             //TODO: See if it's easier to find stuff using other methods
             foreach (Member search in members)
             {
@@ -64,7 +93,7 @@ namespace CAB301Assignment
                     Console.WriteLine("User phone number is: 61+ {0}",
                     search.PhoneNumber);
                     Console.ReadKey();
-                    
+
                 }
                 else if (search.PhoneNumber == uinput)
                 {
@@ -76,13 +105,23 @@ namespace CAB301Assignment
                 {
                     Console.WriteLine("Unable to find username or phone" +
                         "number");
-                    Console.ReadKey();                   
+                    Console.ReadKey();
                 }
             }
+        }
 
 
 
+            //public void MemberLoginChecker()
+            //{
 
+            //foreach (Member search in members)
+            //{
+            //    int i = 0;
+            //    username[i] = search.UserName 
+            //}
+
+            //}
 
             //int currentPhoneNumber = 0;
             //while (valid == false)
@@ -107,7 +146,7 @@ namespace CAB301Assignment
             //}
 
             //}
-        }
+        
         public void ShowInfo()
         {
             for (int i = 0; i < NUM; i++)
@@ -118,7 +157,7 @@ namespace CAB301Assignment
 
 
         //Test to see if the phone number is valid
-        private static int PhoneNumberChecker()
+        private int PhoneNumberChecker()
         {
             int numericalOutput = 0;
             bool valid = false;
@@ -145,7 +184,7 @@ namespace CAB301Assignment
 
 
         //Test to see if password is valid
-        public static int PasswordChecker()
+        public int PasswordChecker()
         {
             bool valid = false;
             int currentPassword = 0;
