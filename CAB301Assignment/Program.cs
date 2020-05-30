@@ -8,7 +8,8 @@ namespace CAB301Assignment
         {
 
 
-
+            Console.Clear();
+            MemberCollection.PreMadeMembers();
             MovieCollection.PreMadeMovies();
 
             Menus.MainMenu();

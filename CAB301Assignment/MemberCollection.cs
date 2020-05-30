@@ -10,14 +10,23 @@ namespace CAB301Assignment
         static int NUM = 100;
         public static Member[] members = new Member[NUM];
         static private int index = 0;
-        private string firstName, lastName, address, fullName, userName;
+        private string firstName, lastName, address, userName;
         private int phoneNumber, password;
 
 
         //Default empty Constructor
         public MemberCollection() { }
 
+        public static void PreMadeMembers()
+        {
+            members[0] = new Member("jon", "snow", "28B, Alice Street",
+                "snowjon", 0447819213, 1234);
+            
+            members[1] = new Member("bob", "ross", "99A, Chermside Rd",
+                "rossbob", 0434473839, 1234);
 
+
+        }
         //Add new member to the array
         public void AddMember()
         {
@@ -26,132 +35,155 @@ namespace CAB301Assignment
             firstName = Console.ReadLine().ToLower();
             Console.Write("Last name: ");
             lastName = Console.ReadLine().ToLower();
-            fullName = firstName + lastName;
             userName = lastName + firstName;
             Console.Write("Address: ");
             address = Console.ReadLine();
             phoneNumber = PhoneNumberChecker();
             password = PasswordChecker();
 
+            while (members[index] != null)
+            {
+                index += 1;
+
+            }
+           
             members[index] = new Member(firstName, lastName, address,
-                fullName, userName, phoneNumber, password);
+               userName, phoneNumber, password);
             Console.WriteLine("Sucessfully created: {0} {1}",
                 members[index].FirstName,
                 members[index].LastName);
+            Console.WriteLine("\n" + members[index].ToString());
             index += 1;
+
+
         }
 
-        //private (string, string) CheckMemberExist()
-        //{
-        //    bool isExist = true;
-        //    while (isExist)
-        //    {
-        //        Console.Write("First name: ");
-        //        firstName = Console.ReadLine().ToLower();
-        //        Console.Write("Last name: ");
-        //        lastName = Console.ReadLine().ToLower();
-        //        foreach (Member member in members)
-        //        {
-        //            if (member.FirstName == firstName && member.LastName
-        //                == lastName)
-        //            {
-        //                isExist = true;
-        //                Console.WriteLine("{0} {1} is already registered",
-        //                    firstName, lastName);
-        //            }
-        //            else
-        //            {
+        //TODO: Check if member already exists
+        private (string, string) CheckMemberExist()
+        {
+            bool isExist = true;
+            while (isExist)
+            {
+                Console.Write("First name: ");
+                firstName = Console.ReadLine().ToLower();
+                Console.Write("Last name: ");
+                lastName = Console.ReadLine().ToLower();
+                foreach (Member member in members)
+                {
+                    if (member.FirstName == firstName && member.LastName
+                        == lastName)
+                    {
+                        isExist = true;
+                        Console.WriteLine("{0} {1} is already registered",
+                            firstName, lastName);
+                    }
+                    else
+                    {
 
-        //                isExist = false;
-        //            }
-        //        }
-        //    } return (firstName, lastName);
-        //}
+                        isExist = false;
+                    }
+                }
+            }
+            return (firstName, lastName);
+        }
         //TODO: Find member contact from name
         public void FindMemberContactPhoneNumber()
         {
             //Find member contact phone number using name
             Console.Clear();
+            string tempFirstName;
+            string tempLastName;
+
             Console.WriteLine("--------Find registered member phone number" +
                 "---------");
-            Console.Write("Enter registered member first and last name" +
-                " with no space: ");
-
-
-            //Find the name of the user using their phone number or find their
-            //find their phone number using their name
-            string input = Console.ReadLine();
-            int uinput = 0;
-            int.TryParse(Console.ReadLine(), out uinput);
-
-
-            //TODO: See if it's easier to find stuff using other methods
-            foreach (Member search in members)
-            {
-                if (search.FullName == input)
+            Console.Write("First name: ");
+            tempFirstName = Console.ReadLine();
+            Console.Write("Last name: ");
+            tempLastName = Console.ReadLine();
+         
+            ////Find the phone number of a registered user
+            
+                foreach (Member member in members)
                 {
-                    Console.WriteLine("User phone number is: 61+ {0}",
-                    search.PhoneNumber);
+                try
+                {
+                    if (member.FirstName == tempFirstName && member.LastName == tempLastName)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("{0} {1} phone number is: 0{2}",
+                            tempFirstName, tempLastName, member.PhoneNumber);
+                        Console.ReadKey();
+                        
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Member not found");
+                        Console.ReadKey();
+                    }
+                }
+                    catch(NullReferenceException)
+                    {
+                        Console.WriteLine("Member not found");
                     Console.ReadKey();
+                    }
+                break;
 
                 }
-                else if (search.PhoneNumber == uinput)
+            }
+         
+        
+
+
+
+        //public void MemberLoginChecker()
+        //{
+
+        //foreach (Member search in members)
+        //{
+        //    int i = 0;
+        //    username[i] = search.UserName 
+        //}
+
+        //}
+
+        //int currentPhoneNumber = 0;
+        //while (valid == false)
+        //{
+        //    if (Member.fullName.Equals(Console.ReadLine()))
+        //    {
+        //        currentPhoneNumber = Member.phoneNumber;
+        //        Console.WriteLine("User phone number is: 61+ " +
+        //        currentPhoneNumber);
+        //        valid = true;
+        //        Console.WriteLine("\n Press any key to go back to staff" +
+        //            " menu");
+        //        Console.ReadKey();
+
+
+        //    }
+        //    else
+        //    {
+        //        valid = false;
+        //        Console.WriteLine("User does not exist");
+        //    }
+        //}
+
+        //}
+
+        public void ShowInfo()
+        {
+            for (int i = 0; i < members.Length; i++)
+            {
+                if (members[i] != null)
                 {
-                    Console.WriteLine("User full name is: {0} {1}",
-                        search.FirstName, search.LastName);
-                    Console.ReadKey();
+                    Console.WriteLine(members[i].ToString());
                 }
                 else
                 {
-                    Console.WriteLine("Unable to find username or phone" +
-                        "number");
                     Console.ReadKey();
+                    return;
                 }
-            }
-        }
-
-
-
-            //public void MemberLoginChecker()
-            //{
-
-            //foreach (Member search in members)
-            //{
-            //    int i = 0;
-            //    username[i] = search.UserName 
-            //}
-
-            //}
-
-            //int currentPhoneNumber = 0;
-            //while (valid == false)
-            //{
-            //    if (Member.fullName.Equals(Console.ReadLine()))
-            //    {
-            //        currentPhoneNumber = Member.phoneNumber;
-            //        Console.WriteLine("User phone number is: 61+ " +
-            //        currentPhoneNumber);
-            //        valid = true;
-            //        Console.WriteLine("\n Press any key to go back to staff" +
-            //            " menu");
-            //        Console.ReadKey();
-
-
-            //    }
-            //    else
-            //    {
-            //        valid = false;
-            //        Console.WriteLine("User does not exist");
-            //    }
-            //}
-
-            //}
-        
-        public void ShowInfo()
-        {
-            for (int i = 0; i < NUM; i++)
-            {
-                Console.WriteLine(members[i]);
             }
         }
 
