@@ -12,6 +12,7 @@ namespace CAB301Assignment
         static private int index = 0;
         private string firstName, lastName, address, userName;
         private int phoneNumber, password;
+        private Movie[] borrowedMovies;
 
 
 
@@ -31,65 +32,61 @@ namespace CAB301Assignment
         //Add new member to the array
         public void AddMember()
         {
+            string searchUserName = "";
+
             Console.WriteLine("--------Add new member-------");
             Console.Write("First name: ");
             firstName = Console.ReadLine().ToLower();
             Console.Write("Last name: ");
             lastName = Console.ReadLine().ToLower();
             userName = lastName + firstName;
-            Console.Write("Address: ");
-            address = Console.ReadLine();
-            phoneNumber = PhoneNumberChecker();
-            password = PasswordChecker();
-
-            while (members[index] != null)
+            try
+            {/*Search for whether or not username already exists in array. Search is done through username since 
+                                                                        username = lastname + firstname and it is unique*/
+                Member foundMember = Array.Find(members, item =>
+                item.UserName == userName);
+                searchUserName = foundMember.UserName;
+            }
+            catch (NullReferenceException)
             {
+
+            }
+            if (userName == searchUserName)
+            {//Username match that of one in the existing members array
+                Console.Clear();
+                Console.WriteLine("{0} {1} already exists",
+                    char.ToUpper(firstName[0]) + firstName.Substring(1),
+                    char.ToUpper(lastName[0]) + lastName.Substring(1));
+            }
+            else
+            {//Continue member creation onto address 
+                Console.Write("Address: ");
+                address = Console.ReadLine();
+                phoneNumber = PhoneNumberChecker();
+                password = PasswordChecker();
+
+                while (members[index] != null)
+                {
+                    index += 1;
+
+                }
+
+                members[index] = new Member(firstName, lastName, address,
+                   userName, phoneNumber, password);
+
+                //Print out the name of the person you just created 
+                Console.WriteLine("Sucessfully created: {0} {1}",
+                    char.ToUpper(members[index].FirstName[0]) + members[index].FirstName.Substring(1),
+                    char.ToUpper(members[index].LastName[0]) + members[index].LastName.Substring(1));
+
+                //Console.WriteLine("\n" + members[index].ToString());
                 index += 1;
 
+
             }
-
-            members[index] = new Member(firstName, lastName, address,
-               userName, phoneNumber, password);
-
-            //Print out the name of the person you just created 
-            Console.WriteLine("Sucessfully created: {0} {1}",
-                char.ToUpper(members[index].FirstName[0]) + members[index].FirstName.Substring(1),
-                char.ToUpper(members[index].LastName[0]) + members[index].LastName.Substring(1)); 
-
-            //Console.WriteLine("\n" + members[index].ToString());
-            index += 1;
-
-
         }
 
-        //TODO: Check if member already exists
-        private (string, string) CheckMemberExist()
-        {
-            bool isExist = true;
-            while (isExist)
-            {
-                Console.Write("First name: ");
-                firstName = Console.ReadLine().ToLower();
-                Console.Write("Last name: ");
-                lastName = Console.ReadLine().ToLower();
-                foreach (Member member in members)
-                {
-                    if (member.FirstName == firstName && member.LastName
-                        == lastName)
-                    {
-                        isExist = true;
-                        Console.WriteLine("{0} {1} is already registered",
-                            firstName, lastName);
-                    }
-                    else
-                    {
-
-                        isExist = false;
-                    }
-                }
-            }
-            return (firstName, lastName);
-        }
+       
         //Find member contact from full name
         public void FindMemberContactPhoneNumber()
         {
@@ -127,7 +124,7 @@ namespace CAB301Assignment
             //If the member does not exist
             catch (NullReferenceException)
             {
-              
+
                 Console.WriteLine("Member not found:");
                 Console.WriteLine("Press any key to continue");
                 Console.ReadKey();
@@ -137,7 +134,30 @@ namespace CAB301Assignment
 
         }
 
+        private void borrowMovie(Member member, Movie movie)
+        {
+            if (movie.GetCurrentCopy() != 0)
+            {
+                member.BorrowMovie(movie);
+                movie.Borrow();
 
+                Console.WriteLine("The following movie was borrowed: {0} by: {1}{2}"
+                    , movie.getTitle(), member.FirstName, member.LastName);
+            }
+            else
+            {
+                Console.WriteLine("The selected movie: {0} has no more " +
+                    "available copies to borrow");
+            }
+        }
+
+        public void BorrowMovie()
+        {
+            string title = "";
+            Console.WriteLine("=========Borrow a movie========");
+            Console.Write("Enter the title of the movie you want to borrow: ");
+            title = Console.ReadLine();
+        }
 
 
         //TODO: Login check to see if the user is logged in
@@ -176,7 +196,7 @@ namespace CAB301Assignment
 
         //}
 
-        public void ShowInfo()
+        public void DisplayAllMembersInfo()
         {
             for (int i = 0; i < members.Length; i++)
             {
@@ -197,14 +217,27 @@ namespace CAB301Assignment
         private int PhoneNumberChecker()
         {
             int numericalOutput = 0;
+            int searchNum = 0;
+            
             bool valid = false;
             while (valid == false)
             {
+                
                 Console.WriteLine("PhoneNumber (10 digits including the " +
                     "starting 0): ");
                 string input = Console.ReadLine();
+                try
+                {
+                    int.TryParse(input, out numericalOutput);
+                    Member foundMember = Array.Find(members, item => item.PhoneNumber == numericalOutput);
+                    searchNum = foundMember.PhoneNumber;
+                }
+                catch (NullReferenceException)
+                {
+
+                }
                 if (int.TryParse(input, out numericalOutput) &&
-                    input.Length == 10)//Phone number can only contain 10 digits
+                    input.Length == 10 && numericalOutput != searchNum)//Phone number can only contain 10 digits and is unique
                 {
                     valid = true;
                     int.TryParse(input, out numericalOutput);
@@ -212,7 +245,8 @@ namespace CAB301Assignment
 
                 else
                 {
-                    Console.WriteLine("\nInvalid phone number");
+                    Console.WriteLine("\nInvalid phone number"); /*Invalid response could be due to phone number that already exists
+                                                                     or just incorrect input in general*/
                 }
             }
 

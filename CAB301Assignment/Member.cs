@@ -6,6 +6,8 @@ namespace CAB301Assignment
 
     public class Member
     {
+        private Movie[] borrowedMovies;
+        private int NUM;
         //Default empty constructor
         public Member()
         {
@@ -31,7 +33,13 @@ namespace CAB301Assignment
         public int PhoneNumber { get; set; }
         public int Password { get; set; }
 
+        public void BorrowMovie(Movie movie)
+        {
+            this.borrowedMovies[NUM] = movie;
+            Array.Resize<Movie>(ref borrowedMovies, borrowedMovies.Length + 1);
+            NUM += 1;
 
+        }
         public override string ToString()
         {
             return String.Format("\n\n" +

@@ -86,13 +86,14 @@ namespace CAB301Assignment
             switch (choice)
             {
                 case 1:
-                    MovieCollection.DisplayInfo();
+                    MovieCollection.DisplayAllMovies();
                     Console.ReadKey();
                     MemberMenu();
                     break;
 
                 case 2:
-                    Console.WriteLine("Borrow a movie DVD");
+                    MovieCollection.DisplayAllMovies();
+
                     break;
 
                 case 3:
@@ -151,33 +152,34 @@ namespace CAB301Assignment
             }
             switch (choice)
             {
-                case 1:
+                case 1: //Add movie
                     MovieCollection.AddMovie();
+                    Console.WriteLine("\nPress any key to go back to staff menu");
                     Console.ReadKey();
                     StaffMenu();
                     break;
 
-                case 2:
+                case 2: //Remove movie
                     MovieCollection.RemoveMovie();
-                    //MovieCollection.DisplayInfo();
+                    Console.WriteLine("\nPress any key to go back to staff menu");
                     Console.ReadKey();
                     StaffMenu();
                     break;
 
-                case 3:
-
+                case 3: //Add new member
                     MemberCollection.AddMember();
+                    Console.WriteLine("\nPress any key to go back to staff menu");
                     Console.ReadKey();
                     StaffMenu();
                     break;
 
-                case 4:
+                case 4://Find member phone number from their name
                     MemberCollection.FindMemberContactPhoneNumber();
                     StaffMenu();
                     break;
 
-                case 5:
-                    MemberCollection.ShowInfo();
+                case 5://Show all of the members info
+                    MemberCollection.DisplayAllMembersInfo();
                     StaffMenu();
                     break;
 
@@ -190,6 +192,8 @@ namespace CAB301Assignment
 
         }
 
+
+        //Genre option menu
         public static string GenreOptions()
         {
             Action printMenu = () =>
@@ -254,6 +258,7 @@ namespace CAB301Assignment
             return userInput;
         }
 
+        //Classification option menu
         public static string ClassificationOptions()
         {
             Action printMenu = () =>
