@@ -178,7 +178,6 @@ namespace CAB301Assignment
 
                 case 5:
                     MemberCollection.ShowInfo();
-                    Console.ReadKey();
                     StaffMenu();
                     break;
 
@@ -366,11 +365,11 @@ namespace CAB301Assignment
         //User Login Menu
         static void LoginMenu(string menuChoice)
         {
-            bool close = true;
+            bool close = false;
             Console.Clear();
 
             //Continous loop until user enter correct username and password
-            while (close)
+            while (close == false)
             {
                 Console.WriteLine("\nPlease enter your " + menuChoice +
                     " username: ");
@@ -379,42 +378,55 @@ namespace CAB301Assignment
                     " password");
                 string password = Console.ReadLine();
 
-                //Staff login
-                if (menuChoice == "staff" && username == "staff" &&
-                    password == "today123")
-                {
 
-                    close = false;
-                    StaffMenu();
+                //Staff login
+                if (menuChoice == "staff" )
+                   
+                    
+                {
+                    if (username == "staff" && password == "today123") //staff username and password has to match the preset one
+                    {
+                        close = true;
+                        StaffMenu();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Incorrect Username or " +
+                            "Password"
+                            + "\nPlease re-enter your " +
+                            "login details \n");
+
+                    }
 
                 }
-                //TODO: Fix up the login to be universal and do testings
+
                 //Member login
+                
                 else if (menuChoice == "member")
                 {
-
-                    foreach (Member search in MemberCollection.members)
-                    {
-                        //case 1 username correct by password incorrect
-                        if (username == search.UserName && password ==
-                            search.Password.ToString())
+                    try
+                    { //Check to see if the member with the entered username or password exist in the members array
+                        Member foundMember = Array.Find(MemberCollection.members,
+                            item => item.UserName == username &&
+                            item.Password.ToString() == password);
+                        if (foundMember.UserName == username &&
+                            foundMember.Password.ToString() == password)
                         {
-                            close = false;
+                            close = true;
                             MemberMenu();
                         }
-
+                    }
+                    catch(NullReferenceException)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Incorrect Username or " +
+                            "Password"
+                            + "\nPlease re-enter your " +
+                            "login details \n");
                     }
                 }
 
-
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine("Incorrect Username or " +
-                        "Password"
-                        + "\nPlease re-enter your " +
-                        "login details \n");
-                }
             }
         }
     }

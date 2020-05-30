@@ -14,6 +14,7 @@ namespace CAB301Assignment
         private int phoneNumber, password;
 
 
+
         //Default empty Constructor
         public MemberCollection() { }
 
@@ -21,7 +22,7 @@ namespace CAB301Assignment
         {
             members[0] = new Member("jon", "snow", "28B, Alice Street",
                 "snowjon", 0447819213, 1234);
-            
+
             members[1] = new Member("bob", "ross", "99A, Chermside Rd",
                 "rossbob", 0434473839, 1234);
 
@@ -46,13 +47,16 @@ namespace CAB301Assignment
                 index += 1;
 
             }
-           
+
             members[index] = new Member(firstName, lastName, address,
                userName, phoneNumber, password);
+
+            //Print out the name of the person you just created 
             Console.WriteLine("Sucessfully created: {0} {1}",
-                members[index].FirstName,
-                members[index].LastName);
-            Console.WriteLine("\n" + members[index].ToString());
+                char.ToUpper(members[index].FirstName[0]) + members[index].FirstName.Substring(1),
+                char.ToUpper(members[index].LastName[0]) + members[index].LastName.Substring(1)); 
+
+            //Console.WriteLine("\n" + members[index].ToString());
             index += 1;
 
 
@@ -86,56 +90,57 @@ namespace CAB301Assignment
             }
             return (firstName, lastName);
         }
-        //TODO: Find member contact from name
+        //Find member contact from full name
         public void FindMemberContactPhoneNumber()
         {
-            //Find member contact phone number using name
+
             Console.Clear();
             string tempFirstName;
             string tempLastName;
 
             Console.WriteLine("--------Find registered member phone number" +
-                "---------");
+            "---------");
             Console.Write("First name: ");
             tempFirstName = Console.ReadLine();
             Console.Write("Last name: ");
             tempLastName = Console.ReadLine();
-         
+            string tempUserName = tempLastName.ToLower() + tempFirstName.ToLower();
+
             ////Find the phone number of a registered user
-            
-                foreach (Member member in members)
-                {
-                try
-                {
-                    if (member.FirstName == tempFirstName && member.LastName == tempLastName)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("{0} {1} phone number is: 0{2}",
-                            tempFirstName, tempLastName, member.PhoneNumber);
-                        Console.ReadKey();
-                        
 
-                    }
-                    else
-                    {
-                        Console.WriteLine("Member not found");
-                        Console.ReadKey();
-                    }
-                }
-                    catch(NullReferenceException)
-                    {
-                        Console.WriteLine("Member not found");
-                    Console.ReadKey();
-                    }
-                break;
+            try
+            {
+                Member foundMember = Array.Find(members, item =>
+                item.UserName == tempUserName); //Find member in the array matching by their username
 
-                }
+                //Print the member's phone number
+                Console.WriteLine("{0} {1}'s phone nubmer is: 0{2}",
+                    char.ToUpper(foundMember.FirstName[0]) +
+                    foundMember.FirstName.Substring(1)
+                    , char.ToUpper(foundMember.LastName[0]) +
+                    foundMember.LastName.Substring(1), foundMember.PhoneNumber);
+
+                Console.ReadKey();
+
             }
-         
-        
+
+            //If the member does not exist
+            catch (NullReferenceException)
+            {
+              
+                Console.WriteLine("Member not found:");
+                Console.WriteLine("Press any key to continue");
+                Console.ReadKey();
+
+
+            }
+
+        }
 
 
 
+
+        //TODO: Login check to see if the user is logged in
         //public void MemberLoginChecker()
         //{
 
@@ -242,6 +247,8 @@ namespace CAB301Assignment
 
 
         }
+
+
     }
 }
 
