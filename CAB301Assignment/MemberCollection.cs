@@ -10,9 +10,10 @@ namespace CAB301Assignment
         static int NUM = 100;
         public static Member[] members = new Member[NUM];
         static private int index = 0;
-        private string firstName, lastName, address, userName;
-        private int phoneNumber, password;
-        private Movie[] borrowedMovies;
+        
+        //private Movie[] borrowedMovies;
+        //public static string[] currentLoggedIn = new string[1];
+        //public static int currentLoggedIndex = 0;
 
 
 
@@ -33,8 +34,10 @@ namespace CAB301Assignment
         public void AddMember()
         {
             string searchUserName = "";
+            string firstName, lastName, address, userName;
+            int phoneNumber, password;
 
-            Console.WriteLine("--------Add new member-------");
+        Console.WriteLine("--------Add new member-------");
             Console.Write("First name: ");
             firstName = Console.ReadLine().ToLower();
             Console.Write("Last name: ");
@@ -86,7 +89,24 @@ namespace CAB301Assignment
             }
         }
 
-       
+        public Member FindMember(string userName)
+        {
+
+            Member found = Array.Find(members, item => item.UserName == userName);
+            if (found.UserName == userName)
+            {
+                return found;
+            }
+
+  
+            else
+            {
+            Console.WriteLine("Member not found");
+                return null;
+            }
+
+        }
+
         //Find member contact from full name
         public void FindMemberContactPhoneNumber()
         {
@@ -134,30 +154,61 @@ namespace CAB301Assignment
 
         }
 
-        private void borrowMovie(Member member, Movie movie)
+       
+
+        public void BorrowMovie(Member member, Movie movie)
         {
-            if (movie.GetCurrentCopy() != 0)
+            string tempMovie = "";
+           
+            try
+            {//Check if user has already got a copy of this movie DVD
+                Movie foundMovie = Array.Find(member.borrowedMovies, item => item.Title == movie.Title);
+                tempMovie = foundMovie.Title;
+            }
+            catch (NullReferenceException)
             {
+
+            }
+
+            if (movie.GetCurrentCopy() != 0 && tempMovie != movie.Title)
+            {//Case 1: There is an available copy of the movie DVD and the user does not have a copy of the same DVD currently
+
                 member.BorrowMovie(movie);
                 movie.Borrow();
 
                 Console.WriteLine("The following movie was borrowed: {0} by: {1}{2}"
                     , movie.getTitle(), member.FirstName, member.LastName);
             }
+            else if (movie.GetCurrentCopy () != 0 && tempMovie == movie.Title)
+            {//Case 2: There is an avilable copy of the movie DVD but the user have borrowed a copy of the movie and have not yet returned it
+                Console.WriteLine("You currently have a copy of this movie");
+            }
             else
-            {
+            {//Case 3: There is no movie DVD available to borrow
                 Console.WriteLine("The selected movie: {0} has no more " +
                     "available copies to borrow");
             }
         }
 
-        public void BorrowMovie()
+        public void CurrentBorrowedMovie(Member member)
         {
-            string title = "";
-            Console.WriteLine("=========Borrow a movie========");
-            Console.Write("Enter the title of the movie you want to borrow: ");
-            title = Console.ReadLine();
+            try
+            {
+                member.CurrentlyBorrowedMovie();
+            }
+            catch
+            {
+
+            }
         }
+        //public void BorrowMovie()
+        //{
+            
+        //    Console.WriteLine("\n\n=========Borrow a movie========");
+        //    Console.Write("Enter the title of the movie you want to borrow: ");
+        //    string title = Console.ReadLine();
+        //    borrowMovie(getLatestLogIn(), MovieCollection.binaryTree.SearchByTitle(title).Data());
+        //}
 
 
         //TODO: Login check to see if the user is logged in

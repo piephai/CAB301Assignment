@@ -161,6 +161,18 @@ namespace CAB301Assignment
 
         }
 
+        public Movie FindMovie(string title)
+        {
+            try
+            {
+                return binaryTree.SearchByTitle(title).Data();
+            }
+            catch(NullReferenceException)
+            {
+
+            }
+            return null;
+        }
 
 
 

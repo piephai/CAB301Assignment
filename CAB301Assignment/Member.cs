@@ -6,7 +6,7 @@ namespace CAB301Assignment
 
     public class Member
     {
-        private Movie[] borrowedMovies;
+        public Movie[] borrowedMovies;
         private int NUM;
         //Default empty constructor
         public Member()
@@ -23,6 +23,7 @@ namespace CAB301Assignment
             this.UserName = userName;
             this.PhoneNumber = phoneNumber;
             this.Password = password;
+            this.borrowedMovies = new Movie[1];
         }
 
         //Declarations
@@ -39,6 +40,43 @@ namespace CAB301Assignment
             Array.Resize<Movie>(ref borrowedMovies, borrowedMovies.Length + 1);
             NUM += 1;
 
+        }
+        public bool getBorrowedMovies(string title)
+        {
+
+            foreach (Movie movie in borrowedMovies)
+            {
+                if (movie.Title != title)
+                {
+                    return false;
+                }
+                
+                
+            }
+            return false;
+            
+
+        }
+        public void CurrentlyBorrowedMovie()
+        {
+            if (borrowedMovies.Length == 1)
+            {
+                Console.WriteLine("This user currently has no borrowed movie");
+            }
+            else
+            {
+                foreach (Movie movie in borrowedMovies)
+                {
+                    if (movie == null)
+                    {
+
+                    }
+                    else
+                    {
+                        movie.PrintMovie();
+                    }
+                }
+            }
         }
         public override string ToString()
         {

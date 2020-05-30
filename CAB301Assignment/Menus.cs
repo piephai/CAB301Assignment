@@ -3,16 +3,16 @@ namespace CAB301Assignment
 {
     public class Menus
     {
-
+        private static string currentUserName;
 
         public static void MainMenu()
 
         {
+            
 
 
-
-            //Menu calling the user to action
-            Action printMenu = () =>
+        //Menu calling the user to action
+        Action printMenu = () =>
                 {
                     Console.WriteLine("1. Staff Login");
                     Console.WriteLine("2. Member Login");
@@ -60,6 +60,7 @@ namespace CAB301Assignment
         static void MemberMenu()
         {
             MovieCollection MovieCollection = new MovieCollection();
+            MemberCollection MemberCollection = new MemberCollection();
             Action printMenu = () =>
             {
                 Console.WriteLine("1. Display all movies");
@@ -93,7 +94,12 @@ namespace CAB301Assignment
 
                 case 2:
                     MovieCollection.DisplayAllMovies();
-
+                    Console.WriteLine("\n\n=========Borrow a movie========");
+                    Console.Write("Enter the title of the movie you want to borrow: ");
+                    string title = Console.ReadLine();
+                    MemberCollection.BorrowMovie(MemberCollection.FindMember(currentUserName), MovieCollection.FindMovie(title));
+                    Console.ReadKey();
+                    MemberMenu();
                     break;
 
                 case 3:
@@ -101,7 +107,10 @@ namespace CAB301Assignment
                     break;
 
                 case 4:
-                    Console.WriteLine("All current borrowed movie DVDs");
+                    Console.WriteLine("========Currently borrowed movies=========");
+                    MemberCollection.CurrentBorrowedMovie(MemberCollection.FindMember(currentUserName));
+                    Console.ReadKey();
+                    MemberMenu();
                     break;
 
                 case 5:
@@ -368,7 +377,7 @@ namespace CAB301Assignment
         }
 
         //User Login Menu
-        static void LoginMenu(string menuChoice)
+        public static void LoginMenu(string menuChoice)
         {
             bool close = false;
             Console.Clear();
@@ -378,7 +387,7 @@ namespace CAB301Assignment
             {
                 Console.WriteLine("\nPlease enter your " + menuChoice +
                     " username: ");
-                string username = Console.ReadLine();
+                currentUserName = Console.ReadLine();
                 Console.WriteLine("Please enter your " + menuChoice +
                     " password");
                 string password = Console.ReadLine();
@@ -389,7 +398,7 @@ namespace CAB301Assignment
                    
                     
                 {
-                    if (username == "staff" && password == "today123") //staff username and password has to match the preset one
+                    if (currentUserName == "staff" && password == "today123") //staff username and password has to match the preset one
                     {
                         close = true;
                         StaffMenu();
@@ -413,13 +422,18 @@ namespace CAB301Assignment
                     try
                     { //Check to see if the member with the entered username or password exist in the members array
                         Member foundMember = Array.Find(MemberCollection.members,
-                            item => item.UserName == username &&
+                            item => item.UserName == currentUserName &&
                             item.Password.ToString() == password);
-                        if (foundMember.UserName == username &&
+                        if (foundMember.UserName == currentUserName &&
                             foundMember.Password.ToString() == password)
                         {
                             close = true;
+
+                            //MemberCollection.currentLoggedIn[MemberCollection.currentLoggedIndex] = currentUserName;
+                            //Array.Resize(ref MemberCollection.currentLoggedIn, MemberCollection.currentLoggedIn.Length + 1);
+                            //MemberCollection.currentLoggedIndex += 1;
                             MemberMenu();
+                            
                         }
                     }
                     catch(NullReferenceException)
