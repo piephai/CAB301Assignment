@@ -84,6 +84,7 @@ namespace CAB301Assignment
             }
         }
 
+        //Find member by their user name
         public Member FindMember(string userName)
         {
 
@@ -153,33 +154,42 @@ namespace CAB301Assignment
         //Member borrow movie DVD
         public void BorrowMovie(Member member, Movie movie)
         {
-            string foundMovie = FindIfMemberHasMovie(member, movie);
+            string foundMovieTitle;
 
-            if (movie.GetCurrentCopy() != 0 && foundMovie != movie.Title)
+            FindIfMovieExists(movie);
+            foundMovieTitle = FindIfMemberHasMovie(member, movie);
+            if (movie.GetCurrentCopy() != 0 && foundMovieTitle != movie.Title)
             {//Case 1: There is an available copy of the movie DVD and the user does not have a copy of the same DVD currently
 
                 member.BorrowMovie(movie);
                 movie.Borrow();
-
-                Console.WriteLine("The following movie was borrowed: {0} by: {1}{2}"
-                    , movie.getTitle(), member.FirstName, member.LastName);
+                Console.WriteLine("The following movie was borrowed: {0}"
+                    , movie.getTitle());
             }
-            else if (movie.GetCurrentCopy() != 0 && foundMovie == movie.Title)
+
+            else if (movie.GetCurrentCopy() != 0 && foundMovieTitle == movie.Title)
             {//Case 2: There is an avilable copy of the movie DVD but the user have borrowed a copy of the movie and have not yet returned it
                 Console.WriteLine("You currently have a copy of this movie");
             }
+
             else
             {//Case 3: There is no movie DVD available to borrow
                 Console.WriteLine("The selected movie: {0} has no more " +
                     "available copies to borrow");
             }
+
         }
+
 
         // Return movies
         public void ReturnBorrowedMovie(Member member, Movie movie)
         {
-            string foundMovie = FindIfMemberHasMovie(member, movie);
-            if  (foundMovie == movie.Title)
+            string foundMovieTitle;
+
+            FindIfMovieExists(movie);
+            foundMovieTitle = FindIfMemberHasMovie(member, movie);
+
+            if (foundMovieTitle == movie.Title)
             { //Case 1: Member title matches that of the one te member currently held
                 member.ReturnCurrentBorrowedMovies(movie);
                 movie.Return();
@@ -190,9 +200,11 @@ namespace CAB301Assignment
             { //Case 2: Member does not currently hold a copy of the movie DVD 
                 Console.WriteLine("You are not currently borrowing the movie: {0}", movie.Title);
             }
+
+
         }
 
-        //Check for the current borrowed movies
+        //Get the current borrowed movies
         public void CurrentBorrowedMovie(Member member)
         {
             try
@@ -205,20 +217,63 @@ namespace CAB301Assignment
             }
         }
 
-        //Helper function to check if user has the movie DVD already
+
+        /*==========================Helper methods===========================*/
+
+        //Check if user has the movie DVD already
         private string FindIfMemberHasMovie(Member member, Movie movie)
         {
-            string tempMovie = "";
+
+            string tempMovieTitle = "";
             try
             {//Check if user has already got a copy of this movie DVD
                 Movie foundMovie = Array.Find(member.borrowedMovies, item => item.Title == movie.Title);
-                tempMovie = foundMovie.Title;
+                tempMovieTitle = foundMovie.Title;
+
             }
             catch (NullReferenceException)
             {
 
+
             }
-            return tempMovie;
+            return tempMovieTitle;
+
+
+        }
+
+        //Check to see if the user entered movie exists
+        public void FindIfMovieExists(Movie movie)
+        {
+            bool isFound = false;
+
+            while (isFound == false)
+            {
+                try //Search for the movie with a matching title in the binary tree
+                {
+                    MovieCollection.binaryTree.SearchByTitle(movie.Title).Data().getTitle();
+                    isFound = true;
+                }
+                catch (NullReferenceException) //Title is not found
+                {
+                    Console.Clear();
+                    Console.WriteLine("\nThe Movie you entered does not exist");
+                    Console.WriteLine("\nPress any key to go back to members menu");
+                    Console.ReadKey();
+                    Menus.MemberMenu();
+                }
+            }
+        }
+
+        //Check if member has more than 10 borrowed movies
+        public void CheckerIfMemberHasMoreThan10Borrow(Member member)
+        {
+            if (member.borrowedMovies.Length >= 10)
+            {
+                Console.WriteLine("\n\nYou cannot borrow more than 10 movie DVDs " +
+                    "at the same time");
+                Console.WriteLine("\nPress Any Key to go back to members menu");
+            }
+  
         }
 
         //Display all the member info

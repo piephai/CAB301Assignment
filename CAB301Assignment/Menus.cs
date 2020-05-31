@@ -51,7 +51,7 @@ namespace CAB301Assignment
         }
 
         //Member Menu
-        static void MemberMenu()
+        public static void MemberMenu()
         {
             MovieCollection MovieCollection = new MovieCollection();
             MemberCollection MemberCollection = new MemberCollection();
@@ -87,11 +87,14 @@ namespace CAB301Assignment
                     break;
 
                 case 2:
+                    MemberCollection.CheckerIfMemberHasMoreThan10Borrow
+                        (MemberCollection.FindMember(currentUserName));
                     MovieCollection.DisplayAllMovies();
                     Console.WriteLine("\n\n=========Borrow a movie DVD========");
                     Console.Write("Enter the title of the movie you want to borrow: ");
                     string title = Console.ReadLine();
-                    MemberCollection.BorrowMovie(MemberCollection.FindMember(currentUserName), MovieCollection.FindMovie(title));
+                    MemberCollection.BorrowMovie(MemberCollection.FindMember(currentUserName),
+                        MovieCollection.FindMovie(title));
                     Console.ReadKey();
                     MemberMenu();
                     break;
@@ -114,7 +117,7 @@ namespace CAB301Assignment
 
                 case 5:
                     Console.WriteLine("=============Top 10 movies==========");
-                    MovieCollection.TopTen();
+                    MovieCollection.DisplayTop10();
                     Console.ReadKey();
                     MemberMenu();
                     break;
@@ -127,7 +130,7 @@ namespace CAB301Assignment
         }
 
         //Staff Menu
-        static void StaffMenu()
+        public static void StaffMenu()
         {
             MemberCollection MemberCollection = new MemberCollection();
             MovieCollection MovieCollection = new MovieCollection();
@@ -399,7 +402,7 @@ namespace CAB301Assignment
             }
             return choice;
         }
-        //Helper function for getting user chocie during adding movie
+        //Helper function for getting user choice during adding movie
         static int GetUserChoiceMovieCreation(Action printMenu, int choiceMax)
         {
             {
