@@ -6,14 +6,9 @@ namespace CAB301Assignment
     public class MemberCollection
 
     {
-        //private int index = 0;
         static int NUM = 100;
         public static Member[] members = new Member[NUM];
         static private int index = 0;
-        
-        //private Movie[] borrowedMovies;
-        //public static string[] currentLoggedIn = new string[1];
-        //public static int currentLoggedIndex = 0;
 
 
 
@@ -37,7 +32,7 @@ namespace CAB301Assignment
             string firstName, lastName, address, userName;
             int phoneNumber, password;
 
-        Console.WriteLine("--------Add new member-------");
+            Console.WriteLine("--------Add new member-------");
             Console.Write("First name: ");
             firstName = Console.ReadLine().ToLower();
             Console.Write("Last name: ");
@@ -98,10 +93,10 @@ namespace CAB301Assignment
                 return found;
             }
 
-  
+
             else
             {
-            Console.WriteLine("Member not found");
+                Console.WriteLine("Member not found");
                 return null;
             }
 
@@ -154,23 +149,13 @@ namespace CAB301Assignment
 
         }
 
-       
 
+        //Member borrow movie DVD
         public void BorrowMovie(Member member, Movie movie)
         {
-            string tempMovie = "";
-           
-            try
-            {//Check if user has already got a copy of this movie DVD
-                Movie foundMovie = Array.Find(member.borrowedMovies, item => item.Title == movie.Title);
-                tempMovie = foundMovie.Title;
-            }
-            catch (NullReferenceException)
-            {
+            string foundMovie = FindIfMemberHasMovie(member, movie);
 
-            }
-
-            if (movie.GetCurrentCopy() != 0 && tempMovie != movie.Title)
+            if (movie.GetCurrentCopy() != 0 && foundMovie != movie.Title)
             {//Case 1: There is an available copy of the movie DVD and the user does not have a copy of the same DVD currently
 
                 member.BorrowMovie(movie);
@@ -179,7 +164,7 @@ namespace CAB301Assignment
                 Console.WriteLine("The following movie was borrowed: {0} by: {1}{2}"
                     , movie.getTitle(), member.FirstName, member.LastName);
             }
-            else if (movie.GetCurrentCopy () != 0 && tempMovie == movie.Title)
+            else if (movie.GetCurrentCopy() != 0 && foundMovie == movie.Title)
             {//Case 2: There is an avilable copy of the movie DVD but the user have borrowed a copy of the movie and have not yet returned it
                 Console.WriteLine("You currently have a copy of this movie");
             }
@@ -190,6 +175,24 @@ namespace CAB301Assignment
             }
         }
 
+        // Return movies
+        public void ReturnBorrowedMovie(Member member, Movie movie)
+        {
+            string foundMovie = FindIfMemberHasMovie(member, movie);
+            if  (foundMovie == movie.Title)
+            { //Case 1: Member title matches that of the one te member currently held
+                member.ReturnCurrentBorrowedMovies(movie);
+                movie.Return();
+
+                Console.WriteLine("The movie {0} was returned", movie.Title);
+            }
+            else
+            { //Case 2: Member does not currently hold a copy of the movie DVD 
+                Console.WriteLine("You are not currently borrowing the movie: {0}", movie.Title);
+            }
+        }
+
+        //Check for the current borrowed movies
         public void CurrentBorrowedMovie(Member member)
         {
             try
@@ -201,52 +204,24 @@ namespace CAB301Assignment
 
             }
         }
-        //public void BorrowMovie()
-        //{
-            
-        //    Console.WriteLine("\n\n=========Borrow a movie========");
-        //    Console.Write("Enter the title of the movie you want to borrow: ");
-        //    string title = Console.ReadLine();
-        //    borrowMovie(getLatestLogIn(), MovieCollection.binaryTree.SearchByTitle(title).Data());
-        //}
 
+        //Helper function to check if user has the movie DVD already
+        private string FindIfMemberHasMovie(Member member, Movie movie)
+        {
+            string tempMovie = "";
+            try
+            {//Check if user has already got a copy of this movie DVD
+                Movie foundMovie = Array.Find(member.borrowedMovies, item => item.Title == movie.Title);
+                tempMovie = foundMovie.Title;
+            }
+            catch (NullReferenceException)
+            {
 
-        //TODO: Login check to see if the user is logged in
-        //public void MemberLoginChecker()
-        //{
+            }
+            return tempMovie;
+        }
 
-        //foreach (Member search in members)
-        //{
-        //    int i = 0;
-        //    username[i] = search.UserName 
-        //}
-
-        //}
-
-        //int currentPhoneNumber = 0;
-        //while (valid == false)
-        //{
-        //    if (Member.fullName.Equals(Console.ReadLine()))
-        //    {
-        //        currentPhoneNumber = Member.phoneNumber;
-        //        Console.WriteLine("User phone number is: 61+ " +
-        //        currentPhoneNumber);
-        //        valid = true;
-        //        Console.WriteLine("\n Press any key to go back to staff" +
-        //            " menu");
-        //        Console.ReadKey();
-
-
-        //    }
-        //    else
-        //    {
-        //        valid = false;
-        //        Console.WriteLine("User does not exist");
-        //    }
-        //}
-
-        //}
-
+        //Display all the member info
         public void DisplayAllMembersInfo()
         {
             for (int i = 0; i < members.Length; i++)
@@ -269,11 +244,11 @@ namespace CAB301Assignment
         {
             int numericalOutput = 0;
             int searchNum = 0;
-            
+
             bool valid = false;
             while (valid == false)
             {
-                
+
                 Console.WriteLine("PhoneNumber (10 digits including the " +
                     "starting 0): ");
                 string input = Console.ReadLine();

@@ -24,6 +24,8 @@ namespace CAB301Assignment
         {
             return this.copies;
         }
+
+        //Add number of copies to a movie DVD
         public void AddCopy(int numCopies)
         {
             for (int i = 0; i < numCopies; i++)
@@ -32,16 +34,23 @@ namespace CAB301Assignment
             }
         }
 
+        //Increase borrowed frequency by 1 and decrease copy every time a movie DVD is borrowed
         public void Borrow()
         {
             this.borrowedFrequency += 1;
             this.copies -= 1;
         }
 
+        public void Return()
+        {
+            this.copies += 1;
+        }
         public string getTitle()
         {
             return Title;
         }
+
+       
 
         public Movie (string title, string starring, string director,
             int duration, string genre, int releaseDate,

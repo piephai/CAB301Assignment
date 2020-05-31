@@ -7,6 +7,7 @@ namespace CAB301Assignment
     {
         public static BinarySearchTree binaryTree = new BinarySearchTree();
 
+
         public static void PreMadeMovies()
         {
             Movie newMovie1 = new Movie("Love Island", "Johnny Depp ", "Koal ",
@@ -53,7 +54,6 @@ namespace CAB301Assignment
 
             }
 
-
             if (searchTitle == title)
             {//Title matches that of one in the binary tree
                 Console.Clear();
@@ -62,7 +62,7 @@ namespace CAB301Assignment
                 binaryTree.SearchByTitle(title).Data().AddCopy(copies);
             }
             else
-            {//Continue in the process of adding movie onto Starring
+            {//Continue in the process of adding movie
                 Console.Write("Starring: ");
                 starring = Console.ReadLine();
                 Console.Write("Director(s): ");
@@ -77,12 +77,11 @@ namespace CAB301Assignment
                 int.TryParse(Console.ReadLine(), out copies);
 
 
-                //Check to see that nothing is not null or empty
+                //Check to see that the fields are not null or empty
                 if (!String.IsNullOrEmpty(title) && !String.IsNullOrEmpty(starring)
                     && !String.IsNullOrEmpty(director) && releaseDate > 0 && duration > 0
                     && copies > 0)
                 {
-
                     Movie newMovie = new Movie(title, starring, director, duration,
                     genre, releaseDate, classification, copies);
 
@@ -91,10 +90,9 @@ namespace CAB301Assignment
                     DisplayMovieInfoCreation(title, starring, director, duration, genre,
                         releaseDate, classification, copies); //Display the movie that has just been added
 
-
                 }
                 else
-                {
+                {//Field(s) were null or empty
                     DisplayMovieInfoCreation(title, starring, director, duration, genre,
                         releaseDate, classification, copies); //Display the movie that the user was trying to add
                     Console.WriteLine("\nInvalid Input (Fields cannot be empty or null)");
@@ -167,15 +165,53 @@ namespace CAB301Assignment
             {
                 return binaryTree.SearchByTitle(title).Data();
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
 
             }
             return null;
         }
 
+        static public int Partition(Movie[] movies, int left, int right)
+        {
+            Movie temp;
+            int pivot = movies[right].GetBorrowedFrequency();
+            int i = left - 1;
+
+            for (int j = left; j < right - 1; j++)
+            {
+                if (movies[j].GetBorrowedFrequency() < pivot)
+                {
+                    i++;
+                    temp = movies[i];
+                    movies[i] = movies[j];
+                    movies[j] = temp;
+                }
+            }
+            temp = movies[i + 1];
+            movies[i + 1] = movies[right];
+            movies[right] = temp;
+            return i + 1;
+
+        }
+
+        public void QuickSort(Movie[] movies, int left, int right)
+        {
+            // For Recusrion
+            if (left < right)
+            {
+                int pivot = Partition(movies, left, right);
+
+                if (pivot > 1)
+                    QuickSort(movies, left, pivot - 1);
+
+                if (pivot + 1 < right)
+                    QuickSort(movies, pivot + 1, right);
+            }
+        }
 
 
+        //Node class
         public class Node
         {
 
@@ -337,238 +373,261 @@ namespace CAB301Assignment
                 Console.Write(data);
             }
 
-
-
-
-
-
-        }
-
-        public class BinarySearchTree
-        {
-
-
-            private Node root;
-
-            public Node Root
+            public void BinaryTreeToArray(Node currentNode)
             {
-                get { return root; }
-            }
-
-
-            public void Add(Movie movie)
-            {
-
-
-                if (root != null)
-                {       //If root is not null then add method is called on root node
-                    root.Add(movie);
+                if (currentNode != null)
+                {
+                    BinaryTreeToArray(currentNode.lChild);
                 }
 
-                else
-                {      //Else root is null then root is new node
-                    root = new Node(movie);
-                }
+
 
             }
 
-            public Node SearchByTitle(string searchTitle)
+            //BST class
+            public class BinarySearchTree
             {
-                //If root is not null we call find method on the root
-                if (root != null)
+                private Node root;
+
+                public Node Root
                 {
-
-                    return root.SearchByTitle(root, searchTitle);
-
-
-                }
-                else
-                {
-                    //If root is null then return null since there is nothing to find
-                    return null;
-                }
-            }
-
-            public Node Search(Movie movie)
-            {
-                if (root != null)
-                {
-                    return root.Search(root, movie);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-
-
-
-
-
-            public void Delete(Movie movie)
-            {
-                //Set current and parent node to root so when a node is remove it is done
-                // from the parent node
-                Node currentNode = root;
-                Node parentNode = root;
-                bool islChild = false;
-                if (currentNode == null)
-                {
-                    return;
+                    get { return root; }
                 }
 
-                //Loop through to find matching node unless no node is found
-                while (currentNode != null && currentNode.Data() != movie)
-                {
-                    parentNode = currentNode;
 
-                    //If the data is less than the current data 
-                    if (movie.getTitle().CompareTo(currentNode.Data().getTitle())
-                        < 0)
+                public void Add(Movie movie)
+                {
+
+
+                    if (root != null)
+                    {       //If root is not null then add method is called on root node
+                        root.Add(movie);
+                    }
+
+                    else
+                    {      //Else root is null then root is new node
+                        root = new Node(movie);
+                    }
+
+                }
+
+                public Node SearchByTitle(string searchTitle)
+                {
+                    //If root is not null we call find method on the root
+                    if (root != null)
                     {
-                        currentNode = currentNode.LeftChild;
-                        islChild = true;
 
-                    } //If the data is more than the current data
+                        return root.SearchByTitle(root, searchTitle);
+
+
+                    }
                     else
                     {
-                        currentNode = currentNode.RightChild;
-                        islChild = false;
+                        //If root is null then return null since there is nothing to find
+                        return null;
                     }
-                }
-                //If no node is found return
-                if (currentNode == null)
-                {
-                    return;
                 }
 
-                //Check for leaf node (node with no children)
-                if (currentNode.LeftChild == null &&
-                    currentNode.RightChild == null)
+                public Node Search(Movie movie)
                 {
-                    //Root has no parent to check for what child it is
-                    if (currentNode == root)
+                    if (root != null)
                     {
-                        root = null;
+                        return root.Search(root, movie);
                     }
-                    //Check if child of parent should be deleted
                     else
                     {
-                        if (islChild)
+                        return null;
+                    }
+                }
+
+                public void Delete(Movie movie)
+                {
+                    //Set current and parent node to root so when a node is remove it is done
+                    // from the parent node
+                    Node currentNode = root;
+                    Node parentNode = root;
+                    bool islChild = false;
+                    if (currentNode == null)
+                    {
+                        return;
+                    }
+
+                    //Loop through to find matching node unless no node is found
+                    while (currentNode != null && currentNode.Data() != movie)
+                    {
+                        parentNode = currentNode;
+
+                        //If the data is less than the current data 
+                        if (movie.getTitle().CompareTo(currentNode.Data().getTitle())
+                            < 0)
                         {
-                            //Remove left child reference
-                            parentNode.LeftChild = null;
+                            currentNode = currentNode.LeftChild;
+                            islChild = true;
+
+                        } //If the data is more than the current data
+                        else
+                        {
+                            currentNode = currentNode.RightChild;
+                            islChild = false;
+                        }
+                    }
+                    //If no node is found return
+                    if (currentNode == null)
+                    {
+                        return;
+                    }
+
+                    //Check for leaf node (node with no children)
+                    if (currentNode.LeftChild == null &&
+                        currentNode.RightChild == null)
+                    {
+                        //Root has no parent to check for what child it is
+                        if (currentNode == root)
+                        {
+                            root = null;
+                        }
+                        //Check if child of parent should be deleted
+                        else
+                        {
+                            if (islChild)
+                            {
+                                //Remove left child reference
+                                parentNode.LeftChild = null;
+                            }
+                            else
+                            {
+                                //Remove right child reference
+                                parentNode.RightChild = null;
+                            }
+                        }
+                    }
+                    //Has only one left child
+                    else if (currentNode.RightChild == null)
+                    {
+                        if (currentNode == root)
+                        {
+                            root = currentNode.LeftChild;
                         }
                         else
                         {
-                            //Remove right child reference
-                            parentNode.RightChild = null;
+                            //Left or right child
+                            if (islChild)
+                            {
+                                parentNode.LeftChild = currentNode.LeftChild;
+                            }
+                            else
+                            {
+                                parentNode.RightChild = currentNode.RightChild;
+                            }
                         }
                     }
-                }
-                //Has only one left child
-                else if (currentNode.RightChild == null)
-                {
-                    if (currentNode == root)
+                    else //Current node has both children
                     {
-                        root = currentNode.LeftChild;
-                    }
-                    else
-                    {
-                        //Left or right child
-                        if (islChild)
+                        //Find sucessorNode
+                        Node sucessorNode = GetSuccessor(currentNode);
+
+                        //If the current node is the root node then the new root is the sucessorNode node
+                        if (currentNode == root)
                         {
-                            parentNode.LeftChild = currentNode.LeftChild;
+                            root = sucessorNode;
+                        }
+                        else if (islChild)
+                        {//if this is the left child set the parents left child node as the sucessorNode node
+                            parentNode.LeftChild = sucessorNode;
                         }
                         else
-                        {
-                            parentNode.RightChild = currentNode.RightChild;
+                        {//if this is the right child set the parents right child node as the sucessorNode node
+                            parentNode.RightChild = sucessorNode;
                         }
+
                     }
                 }
-                else //Current node has both children
-                {
-                    //Find sucessorNode
-                    Node sucessorNode = GetSuccessor(currentNode);
 
-                    //If the current node is the root node then the new root is the sucessorNode node
-                    if (currentNode == root)
+                //Helper function to allocated a node as the new successor node
+                private Node GetSuccessor(Node node)
+                {
+                    Node parentOfSuccessor = node;
+                    Node sucessorNode = node;
+                    Node currentNode = node.RightChild;
+
+                    //Starting at the right child go down every left child nodes
+                    while (currentNode != null)
                     {
-                        root = sucessorNode;
+                        parentOfSuccessor = sucessorNode;
+                        sucessorNode = currentNode;
+                        currentNode = currentNode.LeftChild;// Go to the next left node
                     }
-                    else if (islChild)
-                    {//if this is the left child set the parents left child node as the sucessorNode node
-                        parentNode.LeftChild = sucessorNode;
+                    //if the succesor is not just the right node then
+                    if (sucessorNode != node.RightChild)
+                    {
+                        //set the Left node on the parent node of the succesor node to the right child node of the sucessorNode in case it has one
+                        parentOfSuccessor.LeftChild = sucessorNode.RightChild;
+                        //attach the right child node of the node being deleted to the sucessorNodes right node
+                        sucessorNode.RightChild = node.RightChild;
                     }
-                    else
-                    {//if this is the right child set the parents right child node as the sucessorNode node
-                        parentNode.RightChild = sucessorNode;
+                    //attach the left child node of the node being deleted to the sucessorNodes leftnode node
+                    sucessorNode.LeftChild = node.LeftChild;
+
+                    return sucessorNode;
+                }
+
+
+                //Display nodes in order
+                public void InOrderTraversal()
+                {
+                    if (root != null)
+                    {
+                        Console.WriteLine("");
+                        root.InOrderTraversal();
                     }
-
                 }
-            }
-
-            //Helper function to allocated a node as the new successor node
-            private Node GetSuccessor(Node node)
-            {
-                Node parentOfSuccessor = node;
-                Node sucessorNode = node;
-                Node currentNode = node.RightChild;
-
-                //Starting at the right child go down every left child nodes
-                while (currentNode != null)
+                //Display nodes pre order
+                public void PreOrderTraversal()
                 {
-                    parentOfSuccessor = sucessorNode;
-                    sucessorNode = currentNode;
-                    currentNode = currentNode.LeftChild;// Go to the next left node
+                    if (root != null)
+                    {
+                        Console.WriteLine("\nPre Order: \n");
+                        root.PreOrderTraversal();
+                    }
                 }
-                //if the succesor is not just the right node then
-                if (sucessorNode != node.RightChild)
+                //Display nodes post order
+                public void PostOrderTraversal()
                 {
-                    //set the Left node on the parent node of the succesor node to the right child node of the sucessorNode in case it has one
-                    parentOfSuccessor.LeftChild = sucessorNode.RightChild;
-                    //attach the right child node of the node being deleted to the sucessorNodes right node
-                    sucessorNode.RightChild = node.RightChild;
+                    if (root != null)
+                    {
+                        Console.WriteLine("\nPost Order: \n");
+                        root.PostOrderTraversal();
+                    }
                 }
-                //attach the left child node of the node being deleted to the sucessorNodes leftnode node
-                sucessorNode.LeftChild = node.LeftChild;
 
-                return sucessorNode;
+                //TODO: Shit just don't work fml
+                //public static Movie [] BinaryTreeToArray(Node currentNode, Movie [] movies)
+                //{
+
+                //    if (currentNode != null)
+                //    {
+                //        BinaryTreeToArray(currentNode.LeftChild, movies);
+                //        for (int i = 0; i < movies.Length; i++)
+                //        {
+                //            if (movies[i] == null)
+                //            {
+                //                movies[i] = currentNode.Data();
+                //                Top10 = new movies[i];
+                //                return Top10;
+
+                //            }
+                //            else
+                //            {
+                //                i++;
+                //            }
+                //        }
+                //    }
+                //    BinaryTreeToArray(currentNode.RightChild, movies);
+
+
+                //}
+
             }
-
-
-            //Display nodes in order
-            public void InOrderTraversal()
-            {
-                if (root != null)
-                {
-                    Console.WriteLine("");
-                    root.InOrderTraversal();
-                }
-            }
-            //Display nodes pre order
-            public void PreOrderTraversal()
-            {
-                if (root != null)
-                {
-                    Console.WriteLine("\nPre Order: \n");
-                    root.PreOrderTraversal();
-                }
-            }
-            //Display nodes post order
-            public void PostOrderTraversal()
-            {
-                if (root != null)
-                {
-                    Console.WriteLine("\nPost Order: \n");
-                    root.PostOrderTraversal();
-                }
-            }
-
-
-
-
         }
     }
 }

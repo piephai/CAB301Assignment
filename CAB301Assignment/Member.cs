@@ -8,6 +8,7 @@ namespace CAB301Assignment
     {
         public Movie[] borrowedMovies;
         private int NUM;
+
         //Default empty constructor
         public Member()
         {
@@ -34,6 +35,8 @@ namespace CAB301Assignment
         public int PhoneNumber { get; set; }
         public int Password { get; set; }
 
+
+        //Borrow a movie increases the size of the borrowedMovies array
         public void BorrowMovie(Movie movie)
         {
             this.borrowedMovies[NUM] = movie;
@@ -41,22 +44,30 @@ namespace CAB301Assignment
             NUM += 1;
 
         }
-        public bool getBorrowedMovies(string title)
-        {
 
-            foreach (Movie movie in borrowedMovies)
-            {
-                if (movie.Title != title)
-                {
-                    return false;
-                }
-                
-                
-            }
-            return false;
+
+        //Return the currently held copy of movie DVD and remove that movie DVD from borrowedMovies array
+        public void ReturnCurrentBorrowedMovies(Movie movie)
+        {
             
+            for (int i = 0; i < borrowedMovies.Length; i++)
+            {
+                try
+                {
+                    if (movie.Title == borrowedMovies[i].Title)
+                    {
+                        borrowedMovies[i] = null;
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    
+                }
+            }
 
         }
+
+        //Check for the member currently borrowed movies
         public void CurrentlyBorrowedMovie()
         {
             if (borrowedMovies.Length == 1)
@@ -68,7 +79,7 @@ namespace CAB301Assignment
                 foreach (Movie movie in borrowedMovies)
                 {
                     if (movie == null)
-                    {
+                    {//Do nothing and pass over
 
                     }
                     else
@@ -78,6 +89,8 @@ namespace CAB301Assignment
                 }
             }
         }
+
+        //To write out the member information
         public override string ToString()
         {
             return String.Format("\n\n" +

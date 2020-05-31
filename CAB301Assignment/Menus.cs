@@ -8,9 +8,6 @@ namespace CAB301Assignment
         public static void MainMenu()
 
         {
-            
-
-
         //Menu calling the user to action
         Action printMenu = () =>
                 {
@@ -49,9 +46,6 @@ namespace CAB301Assignment
                 case 2:
                     LoginMenu("member");
                     break;
-
-
-
             }
 
         }
@@ -94,7 +88,7 @@ namespace CAB301Assignment
 
                 case 2:
                     MovieCollection.DisplayAllMovies();
-                    Console.WriteLine("\n\n=========Borrow a movie========");
+                    Console.WriteLine("\n\n=========Borrow a movie DVD========");
                     Console.Write("Enter the title of the movie you want to borrow: ");
                     string title = Console.ReadLine();
                     MemberCollection.BorrowMovie(MemberCollection.FindMember(currentUserName), MovieCollection.FindMovie(title));
@@ -103,7 +97,12 @@ namespace CAB301Assignment
                     break;
 
                 case 3:
-                    Console.WriteLine("Return a movie DVD");
+                    Console.WriteLine("==========Return a movie DVD=============");
+                    Console.Write("Enter the title of the movie you want to return: ");
+                    title = Console.ReadLine();
+                    MemberCollection.ReturnBorrowedMovie(MemberCollection.FindMember(currentUserName), MovieCollection.FindMovie(title));
+                    Console.ReadKey();
+                    MemberMenu();
                     break;
 
                 case 4:
@@ -114,16 +113,15 @@ namespace CAB301Assignment
                     break;
 
                 case 5:
-                    Console.WriteLine("Top 10 most popular movies");
+                    Console.WriteLine("=============Top 10 movies==========");
+                    MovieCollection.TopTen();
+                    Console.ReadKey();
+                    MemberMenu();
                     break;
 
                 case 0:
                     MainMenu();
                     break;
-                default:
-                    throw new NotImplementedException();
-
-
             }
 
         }
@@ -191,16 +189,9 @@ namespace CAB301Assignment
                     MemberCollection.DisplayAllMembersInfo();
                     StaffMenu();
                     break;
-
-
-                default:
-                    throw new NotImplementedException();
-
-
             }
 
         }
-
 
         //Genre option menu
         public static string GenreOptions()
@@ -313,7 +304,76 @@ namespace CAB301Assignment
 
         }
 
-        // Getting user choice and making sure that their choice is valid 
+        //User Login Menu
+        public static void LoginMenu(string menuChoice)
+        {
+            bool close = false;
+            Console.Clear();
+
+            //Continous loop until user enter correct username and password
+            while (close == false)
+            {
+                Console.WriteLine("\nPlease enter your " + menuChoice +
+                    " username: ");
+                currentUserName = Console.ReadLine();
+                Console.WriteLine("Please enter your " + menuChoice +
+                    " password");
+                string password = Console.ReadLine();
+
+
+                //Staff login
+                if (menuChoice == "staff")
+
+
+                {
+                    if (currentUserName == "staff" && password == "today123") //staff username and password has to match the preset one
+                    {
+                        close = true;
+                        StaffMenu();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Incorrect Username or " +
+                            "Password"
+                            + "\nPlease re-enter your " +
+                            "login details \n");
+
+                    }
+                }
+
+                //Member login
+                else if (menuChoice == "member")
+                {
+                    try
+                    { //Check to see if the member with the entered username or password exist in the members array
+                        Member foundMember = Array.Find(MemberCollection.members,
+                            item => item.UserName == currentUserName &&
+                            item.Password.ToString() == password);
+
+                        if (foundMember.UserName == currentUserName &&
+                            foundMember.Password.ToString() == password)
+                        {
+                            close = true;
+                            MemberMenu();
+
+                        }
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Incorrect Username or " +
+                            "Password"
+                            + "\nPlease re-enter your " +
+                            "login details \n");
+                    }
+                }
+
+            }
+        }
+
+        // Getting user choice and making sure that their choice is valid
+        //TODO: Make one method to get user choice for both normal menu and the movie creation menu
         static int GetUserChoice(Action printMenu, int choiceMax)
         {
             int choice = 0;
@@ -324,7 +384,7 @@ namespace CAB301Assignment
                 string temp = Console.ReadLine();
                 bool result = int.TryParse(temp, out choice);
                 if (result && choice >= 0 && choice < choiceMax)
-                {
+                {//User choice is greater than 0 but less than the number of menu options and is a number
                     isValid = true;
 
                 }
@@ -338,11 +398,7 @@ namespace CAB301Assignment
 
             }
             return choice;
-
-
-
         }
-
         //Helper function for getting user chocie during adding movie
         static int GetUserChoiceMovieCreation(Action printMenu, int choiceMax)
         {
@@ -354,7 +410,7 @@ namespace CAB301Assignment
 
                     string temp = Console.ReadLine();
                     bool result = int.TryParse(temp, out choice);
-                    if (result && choice > 0 && choice < choiceMax)
+                    if (result && choice > 0 && choice < choiceMax) //Movie creation does not have the choice of 0 so value has to be greater than 0
                     {
                         isValid = true;
 
@@ -376,78 +432,7 @@ namespace CAB301Assignment
 
         }
 
-        //User Login Menu
-        public static void LoginMenu(string menuChoice)
-        {
-            bool close = false;
-            Console.Clear();
-
-            //Continous loop until user enter correct username and password
-            while (close == false)
-            {
-                Console.WriteLine("\nPlease enter your " + menuChoice +
-                    " username: ");
-                currentUserName = Console.ReadLine();
-                Console.WriteLine("Please enter your " + menuChoice +
-                    " password");
-                string password = Console.ReadLine();
-
-
-                //Staff login
-                if (menuChoice == "staff" )
-                   
-                    
-                {
-                    if (currentUserName == "staff" && password == "today123") //staff username and password has to match the preset one
-                    {
-                        close = true;
-                        StaffMenu();
-                    }
-                    else
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Incorrect Username or " +
-                            "Password"
-                            + "\nPlease re-enter your " +
-                            "login details \n");
-
-                    }
-
-                }
-
-                //Member login
-                
-                else if (menuChoice == "member")
-                {
-                    try
-                    { //Check to see if the member with the entered username or password exist in the members array
-                        Member foundMember = Array.Find(MemberCollection.members,
-                            item => item.UserName == currentUserName &&
-                            item.Password.ToString() == password);
-                        if (foundMember.UserName == currentUserName &&
-                            foundMember.Password.ToString() == password)
-                        {
-                            close = true;
-
-                            //MemberCollection.currentLoggedIn[MemberCollection.currentLoggedIndex] = currentUserName;
-                            //Array.Resize(ref MemberCollection.currentLoggedIn, MemberCollection.currentLoggedIn.Length + 1);
-                            //MemberCollection.currentLoggedIndex += 1;
-                            MemberMenu();
-                            
-                        }
-                    }
-                    catch(NullReferenceException)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Incorrect Username or " +
-                            "Password"
-                            + "\nPlease re-enter your " +
-                            "login details \n");
-                    }
-                }
-
-            }
-        }
+       
     }
 }
 

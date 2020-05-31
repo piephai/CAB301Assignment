@@ -6,15 +6,10 @@ namespace CAB301Assignment
     {
         static void Main(string[] args)
         {
-
-
             Console.Clear();
             MemberCollection.PreMadeMembers();
             MovieCollection.PreMadeMovies();
-
             Menus.MainMenu();
-          
-
         }
     }
 }
