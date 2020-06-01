@@ -15,7 +15,7 @@ namespace CAB301Assignment
         //Default empty Constructor
         public MemberCollection() { }
 
-        public static void PreMadeMembers()
+        public void PreMadeMembers()
         {
             members[0] = new Member("jon", "snow", "28B, Alice Street",
                 "snowjon", 0447819213, 1234);

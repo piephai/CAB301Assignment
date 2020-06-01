@@ -8,7 +8,7 @@ namespace CAB301Assignment
         public static BinarySearchTree binaryTree = new BinarySearchTree();
 
 
-        public static void PreMadeMovies()
+        public void PreMadeMovies()
         {
             Movie newMovie1 = new Movie("Love Island", "Johnny Depp ", "Koal ",
         60, "Comedy", 2019, "M", 2, 2);
@@ -302,7 +302,7 @@ namespace CAB301Assignment
             {
                 try
                 {
-                    Console.WriteLine("The movie {0} has beenborrowed {1} times",
+                    Console.WriteLine("The movie {0} has been borrowed {1} times",
                         movies[i].getTitle(), movies[i].GetBorrowedFrequency());
                 }
                 catch
