@@ -11,35 +11,35 @@ namespace CAB301Assignment
         public static void PreMadeMovies()
         {
             Movie newMovie1 = new Movie("Love Island", "Johnny Depp ", "Koal ",
-        60, "Comedy", 2019, "M", 2);
+        60, "Comedy", 2019, "M", 2, 2);
             Movie newMovie2 = new Movie("Prisoners", "Leonardo", "JK Rowling",
-                128, "Triller ", 2018, "MA15+", 3);
+                128, "Triller ", 2018, "MA15+", 3, 3);
             Movie newMovie3 = new Movie("A Little", "Phai Chai", "Emily Pomeroy"
-                , 120, "Animated", 2019, "G", 1);
+                , 120, "Animated", 2019, "G", 1, 1);
             Movie newMovie4 = new Movie("Jason Bourne", "Actor 1", "Director 1"
-                , 165, "Action", 2008, "M", 1);
+                , 165, "Action", 2008, "M", 1, 3);
             Movie newMovie5 = new Movie("Joseph", "Actor 2", "Director 2"
-                , 110, "Sci-Fi", 2013, "MA15+", 1);
+                , 110, "Sci-Fi", 2013, "MA15+", 1, 5);
             Movie newMovie6 = new Movie("Sim", "James Mc ", "Deno ",
-        120, "Action", 2019, "MA15+", 1);
+        120, "Action", 2019, "MA15+", 1, 1);
             Movie newMovie7 = new Movie("Harry Potter", "Harry", "JK Rowling",
-                128, "Triller ", 2015, "M15+", 3);
+                128, "Triller ", 2015, "M15+", 3, 3);
             Movie newMovie8 = new Movie("Jedi", "Sam Lawson", "Joker"
-                , 120, "Animated", 2019, "G", 1);
+                , 120, "Animated", 2019, "G", 1, 2);
             Movie newMovie9 = new Movie("1917", "Ben Hamilton", "JFF"
-                , 165, "Action, Triller", 2019, "M", 3);
+                , 165, "Action, Triller", 2019, "M", 3, 2);
             Movie newMovie10 = new Movie("Avengers", "Chris Pratt", "Stanley"
-                , 130, "Action", 2018, "MA15+", 4);
+                , 130, "Action", 2018, "MA15+", 4, 10);
             Movie newMovie11 = new Movie("Scary Movie 5", "John Cena", "HK Bent"
-                , 130, "Horror, comedy", 2016, "MA15+", 2);
+                , 130, "Horror, comedy", 2016, "MA15+", 2, 4);
             Movie newMovie12 = new Movie("movie1", "s1", "d1"
-              , 120, "Animated", 2019, "G", 1);
+              , 120, "Animated", 2019, "G", 1, 5);
             Movie newMovie13 = new Movie("movie2", "s2", "d2"
-                , 165, "Action, Triller", 2019, "M", 3);
+                , 165, "Action, Triller", 2019, "M", 3, 2);
             Movie newMovie14 = new Movie("movie3", "s3", "d3"
-                , 130, "Action", 2018, "MA15+", 4);
+                , 130, "Action", 2018, "MA15+", 4, 2);
             Movie newMovie15 = new Movie("movie4", "s4", "d4"
-                , 130, "Horror, comedy", 2016, "MA15+", 2);
+                , 130, "Horror, comedy", 2016, "MA15+", 2, 1);
 
 
             binaryTree.Add(newMovie1);
@@ -57,90 +57,135 @@ namespace CAB301Assignment
             binaryTree.Add(newMovie13);
             binaryTree.Add(newMovie14);
             binaryTree.Add(newMovie15);
-            binaryTree.PreOrderTraversal();
-            binaryTree.InOrderTraversal();
-            binaryTree.PostOrderTraversal();
+
         }
         public void AddMovie()
         {
 
-            string title, starring, director, genre,
-                classification;
-            int duration, releaseDate, copies;
-
+            string title = "";
+            string starring = "";
+            string director = "";
             string searchTitle = "";
+            string classification, genre;
+            int duration = 0;
+            int releaseDate = 0;
+            int copies = 0;
+            int borrowedFrequency = 0;
+
+            
             Movie Movie = new Movie();
 
             Console.WriteLine("------Add new movie-------");
-            Console.Write("Movie title: ");
-            title = Console.ReadLine();
-
-            try
-            {//Check to see if movie title already exists in the binary tree
-                searchTitle = binaryTree.SearchByTitle(title).Data().getTitle();
-
-            }
-            catch (NullReferenceException)
+            title = "";
+            while (String.IsNullOrEmpty(title))
             {
+                Console.Write("Movie title: ");
+                title = Console.ReadLine();
+                if (String.IsNullOrEmpty(title))
+                {
+                    Console.WriteLine("Title field cannot be empty");
+                }
 
+                try
+                {//Check to see if movie title already exists in the binary tree
+                    searchTitle = binaryTree.SearchByTitle(title).Data().getTitle();
+
+                }
+                catch (NullReferenceException)
+                {
+
+                }
             }
 
             if (searchTitle == title)
             {//Title matches that of one in the binary tree
-                Console.Clear();
                 Console.Write("Enter the number of copies you want to add: ");
                 int.TryParse(Console.ReadLine(), out copies);
                 binaryTree.SearchByTitle(title).Data().AddCopy(copies);
             }
             else
             {//Continue in the process of adding movie
-                Console.Write("Starring: ");
-                starring = Console.ReadLine();
-                Console.Write("Director(s): ");
-                director = Console.ReadLine();
-                Console.Write("Movie Duration: ");
-                int.TryParse(Console.ReadLine(), out duration);
-                genre = Menus.GenreOptions(); //Display the genre options
-                Console.Write("Release date: ");
-                int.TryParse(Console.ReadLine(), out releaseDate);
-                classification = Menus.ClassificationOptions(); //Display the classification options
-                Console.Write("Number of copies: ");
-                int.TryParse(Console.ReadLine(), out copies);
-
-
-                //Check to see that the fields are not null or empty
-                if (!String.IsNullOrEmpty(title) && !String.IsNullOrEmpty(starring)
-                    && !String.IsNullOrEmpty(director) && releaseDate > 0 && duration > 0
-                    && copies > 0)
+               
+                while (String.IsNullOrEmpty(starring))
                 {
-                    Movie newMovie = new Movie(title, starring, director, duration,
-                    genre, releaseDate, classification, copies);
-
-                    binaryTree.Add(newMovie); //Add movie to binary tree
-                    Console.WriteLine("=========Movie Added=======");
-                    DisplayMovieInfoCreation(title, starring, director, duration, genre,
-                        releaseDate, classification, copies); //Display the movie that has just been added
-
+                    Console.Write("Starring: ");
+                    starring = Console.ReadLine();
+                    if (String.IsNullOrEmpty(starring))
+                    {
+                        Console.WriteLine("Starring field cannot be empty");
+                    }
                 }
-                else
-                {//Field(s) were null or empty
-                    DisplayMovieInfoCreation(title, starring, director, duration, genre,
-                        releaseDate, classification, copies); //Display the movie that the user was trying to add
-                    Console.WriteLine("\nInvalid Input (Fields cannot be empty or null)");
-                    Console.WriteLine("\nPress any key to go back to staff menu");
-                    return;
+                //Check if the director field is null or empty if not then continue
+                
+                while (String.IsNullOrEmpty(director))
+                {
+                    Console.Write("Director(s): ");
+                    director = Console.ReadLine();
+                    if (String.IsNullOrEmpty(director))
+                    {
+                        Console.WriteLine("Director field cannot be empty");
+                    }
                 }
+
+                //Check if duration field is greater than 0 if it is then continue
+                duration = 0;
+                while (duration <= 0)
+                {
+                    Console.Write("Movie Duration (minutes): ");
+                    int.TryParse(Console.ReadLine(), out duration);
+                    if (duration <= 0)
+                    {
+                        Console.WriteLine("Invalid movie duration");
+                    }
+                }
+
+                genre = Menus.GenreOptions(); //Display the genre options
+
+                //Check to see if release date is in the set range
+                releaseDate = 0;
+                while (releaseDate < 1900 || releaseDate > 2025)
+                {
+                    Console.Write("Release date (year): ");
+                    int.TryParse(Console.ReadLine(), out releaseDate);
+                    if (releaseDate < 1900 || releaseDate > 2025)
+                    {
+                        Console.WriteLine("Please enter a valid release date");
+                    }
+                }
+                classification = Menus.ClassificationOptions(); //Display the classification options
+                while (copies <= 0)
+                {
+                    Console.Write("Number of copies: ");
+                    int.TryParse(Console.ReadLine(), out copies);
+                    if (copies <= 0)
+                    {
+                        Console.WriteLine("Invalid number of copies");
+                    }
+                }
+
+
+                Movie newMovie = new Movie(title, starring, director, duration,
+                genre, releaseDate, classification, copies, borrowedFrequency); //Initialise a new movie object with the user inputs
+
+                binaryTree.Add(newMovie); //Add movie to binary tree
+                Console.WriteLine("=========Movie Added=======");
+                DisplayMovieInfoCreation(title, starring, director, duration, genre,
+                    releaseDate, classification, copies); //Display the movie that has just been added
+
+
             }
         }
 
 
-        //Display movie info function
+
+
+        //Display movie info
         private void DisplayMovieInfoCreation(string title, string starring,
             string director, int duration, string genre, int releaseDate,
             string classification, int copies)
         {
             Console.WriteLine("\nTitle: {0}\nStarring: {1}\nDirector: {2}" +
-                        "\nDuration: {3}\nGenre: {4}\nRelease Date: {5}" +
+                        "\nDuration (minutes): {3}\nGenre: {4}\nRelease Date (year): {5}" +
                         "\nClassification: {6}\nNumber of copies: {7}",
                         title, starring, director, duration,
                         genre, releaseDate, classification, copies);
@@ -151,6 +196,7 @@ namespace CAB301Assignment
         {
             Console.WriteLine("================All Movies============");
             binaryTree.InOrderTraversal();
+
         }
 
         //Remove a movie from the binary tree
@@ -173,7 +219,6 @@ namespace CAB301Assignment
                 }
                 catch (NullReferenceException)
                 {
-                    binaryTree.InOrderTraversal();
                     Console.WriteLine("\nThe movie you entered does not exist");
                     Console.Write("\nPlease enter the title of the movie you" +
                         " want to remove: ");
@@ -183,13 +228,12 @@ namespace CAB301Assignment
 
             //Delete the movie in the binary tree if found
             binaryTree.Delete(binaryTree.SearchByTitle(userInput).Data());
-            binaryTree.InOrderTraversal();
             Console.WriteLine("\n\nThe movie '{0}' has been deleted",
              userInput);
 
 
         }
-
+        //Find the movie object
         public Movie FindMovie(string title)
         {
             try
@@ -203,32 +247,34 @@ namespace CAB301Assignment
             return null;
         }
 
+        //Partition for quick sort
         public int Partition(Movie[] movies, int left, int right)
         {
             Movie temp;
-            int pivot = movies[right].GetBorrowedFrequency();
+            int pivot = movies[right].GetBorrowedFrequency(); //Set the pivot 
             int i = left - 1;
 
-            for (int j = left; j <= right - 1; j++)
+            for (int j = left; j <= right - 1; j++) //Set the starting value j to be the equal to left then iterate up to the left index of value right
             {
                 if (movies[j].GetBorrowedFrequency() <= pivot)
                 {
-                    i++;
-                    temp = movies[i];
-                    movies[i] = movies[j];
-                    movies[j] = temp;
-                }
+                    i++; //Increase i value if j borrowed frequency is less than the pivot
+                    temp = movies[i]; //Set the Temp movie to the current movies[i]
+                    movies[i] = movies[j]; //Now the movies[i] is equal to the current index of movies[j]
+                    movies[j] = temp; //Movie[j] is now the new Movie temp
+                }//i will have increased after the iteration 
             }
-            temp = movies[i + 1];
+            temp = movies[i + 1]; //Set the new temp to be movies the new i value + 1
             movies[i + 1] = movies[right];
             movies[right] = temp;
             return i + 1;
 
         }
 
+        //Quick sort
         public void QuickSort(Movie[] movies, int left, int right)
         {
-            // For Recusrion
+            // For Recursion
             if (left < right)
             {
                 int pivot = Partition(movies, left, right);
@@ -237,9 +283,10 @@ namespace CAB301Assignment
             }
         }
 
+        //Display top 10 most borrowed movies
         public void DisplayTop10()
         {
-            int indexSize = binaryTree.BTSize(binaryTree.Root);
+            int indexSize = binaryTree.BTSize(binaryTree.Root); //Set the index size to be the size of the Binary Tree
             Movie[] movies = new Movie[indexSize];
 
             binaryTree.BinaryTreeToArray(binaryTree.Root, movies);
@@ -255,7 +302,7 @@ namespace CAB301Assignment
             {
                 try
                 {
-                    Console.WriteLine("The movie {0} has been borrowed: {1}",
+                    Console.WriteLine("The movie {0} has beenborrowed {1} times",
                         movies[i].getTitle(), movies[i].GetBorrowedFrequency());
                 }
                 catch
@@ -332,7 +379,6 @@ namespace CAB301Assignment
 
             public Node SearchByTitle(Node currentNode, string searchTitle)
             {
-                //Node currentNode = this;
                 if (currentNode != null)
                 {
                     //If title match current Node
@@ -340,14 +386,13 @@ namespace CAB301Assignment
                     {
                         return currentNode;
                     }
-                    //If the title is located to the right of the current node
 
+                    //If the title is located to the right of the current node
                     else
 
                     {
                         if (searchTitle.CompareTo(currentNode.data.getTitle()) < 0)
-                        //If the title is located to the left of the current node
-                        {
+                        {//If the title is located to the left of the current node
                             return SearchByTitle(currentNode.lChild, searchTitle);
                         }
                         else
@@ -373,7 +418,7 @@ namespace CAB301Assignment
                     else
                     {
                         if (movie.getTitle().CompareTo(currentNode.data.getTitle()) < 0)
-                        {//Movie title is less than that of the current node movie.Title so move down the left side of the tree by one node
+                        {//Movie title comes before the current node movie.Title so move down the left side of the tree by one node
                             return Search(currentNode.lChild, movie);
                         }
                         else
@@ -392,7 +437,7 @@ namespace CAB301Assignment
             //Sorting alphabetically by the movie title
             public void InOrderTraversal()
             {
-                //first go to left child its children will be null so print its data
+                //First go to left child its children will be null so print its data
                 if (lChild != null)
                     lChild.InOrderTraversal();
                 Console.Write(data);

@@ -17,7 +17,6 @@ namespace CAB301Assignment
 
                 };
 
-            Console.Clear();
             Console.WriteLine("Welcome to the Community Library");
             Console.WriteLine("===========Main Menu==========");
 
@@ -65,8 +64,7 @@ namespace CAB301Assignment
                 Console.WriteLine("0. Return to the main menu");
             };
 
-            Console.Clear();
-            Console.WriteLine("===========Member Menu==========");
+            Console.WriteLine("\n===========Member Menu==========");
             printMenu();
             Console.WriteLine("================================");
             Console.WriteLine(" \n Please make a selection (1-5," +
@@ -82,6 +80,7 @@ namespace CAB301Assignment
             {
                 case 1:
                     MovieCollection.DisplayAllMovies();
+                    Console.WriteLine("\n\nPress any key to go back to members menu");
                     Console.ReadKey();
                     MemberMenu();
                     break;
@@ -146,8 +145,7 @@ namespace CAB301Assignment
                     Console.WriteLine("0. Return to the main menu");
                 };
 
-            Console.Clear();
-            Console.WriteLine("===========Staff Menu==========");
+            Console.WriteLine("\n===========Staff Menu==========");
             printMenu();
             Console.WriteLine("================================");
             Console.WriteLine(" \n Please make a selection (1-5," +
@@ -157,6 +155,7 @@ namespace CAB301Assignment
 
             if (choice == 0)
             {
+                Console.WriteLine("");
                 MainMenu();
 
             }
@@ -211,7 +210,7 @@ namespace CAB301Assignment
                 Console.WriteLine("8. Other");
             };
             string userInput = "";
-            Console.WriteLine("\nPlease select one of the genre below");
+            Console.WriteLine("\nPlease select one of the genre below:");
             printMenu();
             Console.Write("Plese make a selection (1-8): ");
             int choice = GetUserChoiceMovieCreation(printMenu, 8);
@@ -311,7 +310,6 @@ namespace CAB301Assignment
         public static void LoginMenu(string menuChoice)
         {
             bool close = false;
-            Console.Clear();
 
             //Continous loop until user enter correct username and password
             while (close == false)
@@ -336,8 +334,8 @@ namespace CAB301Assignment
                     }
                     else
                     {
-                        Console.Clear();
-                        Console.WriteLine("Incorrect Username or " +
+                        //Console.Clear();
+                        Console.WriteLine("\nIncorrect Username or " +
                             "Password"
                             + "\nPlease re-enter your " +
                             "login details \n");
@@ -364,7 +362,7 @@ namespace CAB301Assignment
                     }
                     catch (NullReferenceException)
                     {
-                        Console.Clear();
+                        //Console.Clear();
                         Console.WriteLine("Incorrect Username or " +
                             "Password"
                             + "\nPlease re-enter your " +
@@ -375,8 +373,9 @@ namespace CAB301Assignment
             }
         }
 
+        /*===========================Helper methods========================*/
+
         // Getting user choice and making sure that their choice is valid
-        //TODO: Make one method to get user choice for both normal menu and the movie creation menu
         static int GetUserChoice(Action printMenu, int choiceMax)
         {
             int choice = 0;
@@ -402,7 +401,7 @@ namespace CAB301Assignment
             }
             return choice;
         }
-        //Helper function for getting user choice during adding movie
+        //Get user choice during when the staff is adding a new movie
         static int GetUserChoiceMovieCreation(Action printMenu, int choiceMax)
         {
             {

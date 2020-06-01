@@ -67,6 +67,8 @@ namespace CAB301Assignment
 
         }
 
+
+
         //Check for the member currently borrowed movies
         public void CurrentlyBorrowedMovie()
         {
@@ -96,10 +98,10 @@ namespace CAB301Assignment
             return String.Format("\n\n" +
                 "First Name: {0}\nLast Name: {1}\nAddress: {2}\n" +
                 "Phone Number: 61+ {3}\nPassword (4 Digits Number): {4}" +
-                "\nUsername: {5}", char.ToUpper(FirstName[0]) +
+                "\nUsername: {5}\nNumber of movies borrowing: {6}", char.ToUpper(FirstName[0]) +
                 FirstName.Substring(1), char.ToUpper(LastName[0]) +
                 LastName.Substring(1), Address, PhoneNumber,
-                Password, UserName);
+                Password, UserName, borrowedMovies.Length - 1);
         }
     }
 }

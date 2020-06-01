@@ -54,7 +54,7 @@ namespace CAB301Assignment
 
         public Movie (string title, string starring, string director,
             int duration, string genre, int releaseDate,
-            string classification, int copies)
+            string classification, int copies, int borrowedFrequency)
         {
             this.Title = title;
             this.Starring = starring;
@@ -64,7 +64,7 @@ namespace CAB301Assignment
             this.ReleaseDate = releaseDate;
             this.Classification = classification;
             this.copies = copies;
-            this.borrowedFrequency = 0;
+            this.borrowedFrequency = borrowedFrequency;
         }
 
         public void IncrementMovieFrequency()
@@ -81,9 +81,9 @@ namespace CAB301Assignment
         {
             Console.WriteLine("\nTitle: {0}\nStarring: {1}\nDirector: {2}" +
                     "\nDuration: {3}\nGenre: {4}\nRelease Date: {5}" +
-                    "\nClassification: {6}\nNumber of copies: {7}\nNumber of times borrowed: {8}",
+                    "\nClassification: {6}\nNumber of copies available: {7}\n",
                     Title, Starring, Director, Duration,
-                    Genre, ReleaseDate, Classification, copies, borrowedFrequency);
+                    Genre, ReleaseDate, Classification, copies);
         }
 
         public override string ToString()
@@ -91,9 +91,9 @@ namespace CAB301Assignment
             return String.Format("\n\nTitle: {0}\nStarring:{1}\nDirector:{2}\n" +
                 "Duration {3}min\nGenre: {4}\n" +
                 "Release Date: {5}\nRating: " +
-                "{6}\nNumber of copies: {7}", Title,
+                "{6}\nNumber of copies: {7}\nTimes borrowed: {8}", Title,
                 Starring, Director, Duration, Genre, ReleaseDate,
-                Classification, copies);
+                Classification, copies, borrowedFrequency);
         }
 
 
